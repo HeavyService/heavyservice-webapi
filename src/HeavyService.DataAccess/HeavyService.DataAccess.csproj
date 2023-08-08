@@ -12,11 +12,6 @@
 
   <ItemGroup>
     <Folder Include="Handlers\" />
-    <Folder Include="Interfaces\Roles\" />
-    <Folder Include="Interfaces\TransportComments\" />
-    <Folder Include="Interfaces\Transports\" />
-    <Folder Include="Interfaces\UserRoles\" />
-    <Folder Include="Interfaces\Users\" />
   </ItemGroup>
 
   <ItemGroup>
