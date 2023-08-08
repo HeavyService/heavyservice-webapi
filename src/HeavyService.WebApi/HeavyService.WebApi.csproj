@@ -7,11 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Media\Images\" />
+    <ProjectReference Include="..\HeavyService.Service\HeavyService.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HeavyService.Service\HeavyService.Service.csproj" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Configurations\" />
+    <Folder Include="Acsessors\" />
+    <Folder Include="wwwroot\media\images\" />
+    <Folder Include="wwwroot\media\avatars\" />
+    <Folder Include="wwwroot\media\documents\" />
+    <Folder Include="wwwroot\media\audios\" />
+    <Folder Include="wwwroot\media\videos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

@@ -10,4 +10,10 @@
     <ProjectReference Include="..\HeavyService.Persistance\HeavyService.Persistance.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="hubs\" />
+    <Folder Include="Healpers\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
