@@ -12,4 +12,9 @@ public class BaseRepository
         //this._connection = new NpgsqlConnection("Host=localhost; Port=5432; Database=HeavyService-db; User Id=postgres; Password=1111;");
         this._connection = new NpgsqlConnection("Host=localhost; Port=5432; Database=Heavyservice; User Id=postgres; Password=abdurahim2005;");
     }
+
+    public Task<int> CreateAsync(InstrumentComment entity)
+    {
+        throw new NotImplementedException();
+    }
 }
