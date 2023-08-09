@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace HeavyService.Domain.Entities.Transports;
-
 public class Transport : AudiTable
 {
     public long UserId { get; set; }
