@@ -6,7 +6,6 @@ namespace HeavyService.Domain.Entities.Instruments;
 public class Instrument : AudiTable
 {
     public long UserId { get; set; }
-
     [MaxLength(30)]
     public string Name { get; set; } = string.Empty;
     public string ImagePath { get; set; } = string.Empty;

@@ -2,7 +2,7 @@
 
 namespace HeavyService.DataAccess.ViewModels;
 
-public class InstrumentCommentViewModel : AudiTable
+public class TransportCommentViewmodel : AudiTable
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
