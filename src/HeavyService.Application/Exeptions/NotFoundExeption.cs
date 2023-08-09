@@ -2,9 +2,8 @@
 
 namespace HeavyService.Application.Exeptions;
 
-public class NotFoundExeption : Exception
+public class NotFoundExeption : ClientExeption
 {
-    public HttpStatusCode StatusCode { get; } = HttpStatusCode.NotFound;
-
-    public string TitleMessage { get; protected set; } = string.Empty;
+    public override HttpStatusCode StatusCode { get; } = HttpStatusCode.NotFound;
+    public override string TitleMessage { get; protected set; } = string.Empty;
 }
