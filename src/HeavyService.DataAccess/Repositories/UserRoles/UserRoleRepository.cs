@@ -20,9 +20,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         }
         catch
         {
-
             return 0;
-
         }
         finally
         {
@@ -42,9 +40,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         }
         catch
         {
-
             return 0;
-
         }
         finally
         {
@@ -57,16 +53,14 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         {
             await _connection.OpenAsync();
             string query = $"SELECT * FROM user_roles order by id desc " +
-                $"offset {0} limit {@params.PageSize}";
+                $"offset {@params.SkipCount()} limit {@params.PageSize}";
             var result = (await _connection.QueryAsync<UserRoleViewModel>(query)).ToList();
             
             return result;
         }
         catch
         {
-
             return new List<UserRoleViewModel>();
-
         }
         finally
         {
@@ -85,9 +79,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         }
         catch
         {
-
             return null;
-
         }
         finally
         {
@@ -99,16 +91,14 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "UPDATE public.user_roles" +
-                "SET role_id=@RoleId, user_id=@UserId, created_at=@CreatedAt, updated_at=@UpdatedAt" +
-                $"WHERE id = {id};";
+            string query = "UPDATE public.user_roles SET role_id=@RoleId, user_id=@UserId, created_at=@CreatedAt, " +
+                $"updated_at=@UpdatedAt WHERE id = {id};";
             var result = await _connection.ExecuteAsync(query, entity);
             
             return result;
         }
         catch 
         {
-
             return 0;
         }
         finally
@@ -121,8 +111,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.user_roles(" +
-                "role_id, user_id, created_at, updated_at)" +
+            string query = "INSERT INTO public.user_roles(role_id, user_id, created_at, updated_at) " +
                 "VALUES (@RoleId, @UserId, @CreatedAt, @UpdatedAt);";
             var result = await _connection.ExecuteAsync(query, entity);
             
@@ -130,7 +119,6 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         }
         catch 
         {
-
             return 0;
         }
         finally
