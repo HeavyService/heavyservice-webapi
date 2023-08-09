@@ -15,6 +15,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
             await _connection.OpenAsync();
             string query = "select count(*) from instruments";
             var result = await _connection.QuerySingleAsync<long>(query);
+           
             return result;
         }
         catch
@@ -40,6 +41,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
                 "tVALUES (@Name, @Description, @ImagePath, @PricePerDay, @Region, @District, @Address, @Status," +
                 " @CreatedAt, @UpdatedAt, @UserId, @PhoneNumber);";
             var result = await _connection.ExecuteAsync(query, entity);
+           
             return result;
         }
         catch 
@@ -60,6 +62,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
             await _connection.OpenAsync();
             string query = $"DELETE FROM instruments WHERE id=@Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
+            
             return result;
 
         }
@@ -83,6 +86,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
             string query = $"SELECT * FROM instruments order by id desc " +
                 $"offset {0} limit {@params.PageSize}";
             var result = (await _connection.QueryAsync<InstrumentViewModel>(query)).ToList();
+           
             return result;
         }
         catch
@@ -97,13 +101,14 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         }
     }
 
-    public async Task<InstrumentViewModel> GetByIdAsync(long id)
+    public async Task<InstrumentViewModel?> GetByIdAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
             string query = "SELECT * FROM instruments where id = @Id";
             var result = await _connection.QuerySingleAsync<InstrumentViewModel>(query, new { Id = id });
+            
             return result;
         }
         catch
@@ -135,6 +140,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
                 " phone_number=@PhoneNumber" +
                 $"WHERE id = {id};";
             var result = await _connection.ExecuteAsync(query, entity);
+           
             return result;
         }
         catch 

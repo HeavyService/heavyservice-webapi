@@ -34,6 +34,7 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
             string query = "INSERT INTO public.instrument_comments(user_id, instrument_id, comment, created_at, updated_at, is_edited, reply_id)" +
                 "VALUES (@UserId, @InstrumentId, @Comment, @CreatedAt, @UpdatedAt, @IsEdited,  @ReplyId);";
             var result = await _connection.ExecuteAsync(query, entity);
+            
             return result;
         }
         catch
@@ -53,6 +54,7 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
             await _connection.OpenAsync();
             string query = "DELETE FROM public.instrument_comments WHERE id=@Id;";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
+            
             return result;
         }
         catch 
@@ -74,6 +76,7 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
             string query = $"SELECT * FROM admins order by id desc " +
                 $"offset {0} limit {@params.PageSize}";
             var result = (await _connection.QueryAsync<InstrumentCommentViewModel>(query)).ToList();
+            
             return result;
         }
         catch
@@ -88,13 +91,14 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         }
     }
 
-    public async Task<InstrumentCommentViewModel> GetByIdAsync(long id)
+    public async Task<InstrumentCommentViewModel?> GetByIdAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
             string query = "SELECT * FROM instrument_comments where id = @Id";
             var result = await _connection.QuerySingleAsync<InstrumentCommentViewModel>(query, new { Id = id });
+           
             return result;
         }
         catch
@@ -119,6 +123,7 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
                 " created_at = @CreatedAt, updated_at = @UpdatedAt, is_edited = @IsEdited, reply_id = @ReplyId" +
                 "WHERE id=@Id;";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
+            
             return result;
         }
         catch 

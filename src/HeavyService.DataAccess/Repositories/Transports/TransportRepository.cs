@@ -14,6 +14,7 @@ public class TransportRepository : BaseRepository, ITransportRepository
             await _connection.OpenAsync();
             string query = "select count(*) from transports";
             var result = await _connection.QuerySingleAsync<long>(query);
+            
             return result;
         }
         catch
@@ -39,6 +40,7 @@ public class TransportRepository : BaseRepository, ITransportRepository
                 "VALUES (@UserId, @Name, @Description, @ImagePath, @PricePerHours, @Region, @District," +
                 " @Address, @Status, @CreatedAt, @UpdatedAt, @PhoneNumber);";
             var result = await _connection.ExecuteAsync(query, entity);
+            
             return result;
         }
         catch
@@ -59,8 +61,8 @@ public class TransportRepository : BaseRepository, ITransportRepository
             await _connection.OpenAsync();
             string query = $"DELETE FROM transports WHERE id=@Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
+            
             return result;
-
         }
         catch
         {
@@ -82,6 +84,7 @@ public class TransportRepository : BaseRepository, ITransportRepository
             string query = $"SELECT * FROM transports order by id desc " +
                 $"offset {0} limit {@params.PageSize}";
             var result = (await _connection.QueryAsync<TransportViewModel>(query)).ToList();
+            
             return result;
         }
         catch
@@ -96,13 +99,14 @@ public class TransportRepository : BaseRepository, ITransportRepository
         }
     }
 
-    public async Task<TransportViewModel> GetByIdAsync(long id)
+    public async Task<TransportViewModel?> GetByIdAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
             string query = "SELECT * FROM transports where id = @Id";
             var result = await _connection.QuerySingleAsync<TransportViewModel>(query, new { Id = id });
+            
             return result;
         }
         catch
@@ -134,6 +138,7 @@ public class TransportRepository : BaseRepository, ITransportRepository
                 " updated_at=@UpdatedAt, phone_number=@PhoneNumber" +
                 $"WHERE id = {id};";
             var result = await _connection.ExecuteAsync(query, entity);
+            
             return result;
         }
         catch

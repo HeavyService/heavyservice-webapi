@@ -6,5 +6,4 @@ namespace HeavyService.DataAccess.Interfaces.TransportComments;
 
 public interface ITransportCommentRepository : IRepository<TransportComment, TransportCommentViewmodel>,
     IGetAll<TransportCommentViewmodel>
-{
-}
+{}

@@ -15,6 +15,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
             await _connection.OpenAsync();
             string query = "select count(*) from user_roles";
             var result = await _connection.QuerySingleAsync<long>(query);
+            
             return result;
         }
         catch
@@ -35,6 +36,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
             await _connection.OpenAsync();
             string query = $"DELETE FROM user_roles WHERE id=@Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
+            
             return result;
 
         }
@@ -57,6 +59,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
             string query = $"SELECT * FROM user_roles order by id desc " +
                 $"offset {0} limit {@params.PageSize}";
             var result = (await _connection.QueryAsync<UserRoleViewModel>(query)).ToList();
+            
             return result;
         }
         catch
@@ -70,13 +73,14 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
             await _connection.CloseAsync();
         }
     }
-    public async Task<UserRoleViewModel> GetByIdAsync(long id)
+    public async Task<UserRoleViewModel?> GetByIdAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
             string query = "SELECT * FROM user_roles where id = @Id";
             var result = await _connection.QuerySingleAsync<UserRoleViewModel>(query, new { Id = id });
+            
             return result;
         }
         catch
@@ -99,6 +103,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
                 "SET role_id=@RoleId, user_id=@UserId, created_at=@CreatedAt, updated_at=@UpdatedAt" +
                 $"WHERE id = {id};";
             var result = await _connection.ExecuteAsync(query, entity);
+            
             return result;
         }
         catch 
@@ -120,6 +125,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
                 "role_id, user_id, created_at, updated_at)" +
                 "VALUES (@RoleId, @UserId, @CreatedAt, @UpdatedAt);";
             var result = await _connection.ExecuteAsync(query, entity);
+            
             return result;
         }
         catch 
