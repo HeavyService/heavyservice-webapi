@@ -1,12 +1,13 @@
 ﻿using HeavyService.Domain.Enums;
+using Microsoft.AspNetCore.Http;
 
-namespace HeavyService.Domain.Entities.Instruments;
+namespace HeavyService.Persistance.Dtos.Instruments;
 
-public class Instrument : AudiTable
+public class InstrumentUpdateDto
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string ImagePath { get; set; } = string.Empty;
+    public IFormFile? ImagePath { get; set; }
     public int PricePerDay { get; set; }
     public string Region { get; set; } = string.Empty;
     public string District { get; set; } = string.Empty;

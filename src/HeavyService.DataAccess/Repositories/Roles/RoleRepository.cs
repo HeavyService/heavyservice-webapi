@@ -18,9 +18,7 @@ public class RoleRepository : BaseRepository, IRoleRepository
         }
         catch
         {
-
             return 0;
-
         }
         finally
         {
@@ -40,9 +38,7 @@ public class RoleRepository : BaseRepository, IRoleRepository
         }
         catch
         {
-
             return 0;
-
         }
         finally
         {
@@ -61,9 +57,7 @@ public class RoleRepository : BaseRepository, IRoleRepository
         }
         catch
         {
-
             return null;
-
         }
         finally
         {
@@ -75,16 +69,16 @@ public class RoleRepository : BaseRepository, IRoleRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "UPDATE public.roles" +
-                "SET name=@Name, created_at=@CreatedAt, updated_at=@UpdatedAt" +
+            
+            string query = "UPDATE public.roles SET name=@Name, created_at=@CreatedAt, updated_at=@UpdatedAt " +
                 "WHERE id = @Id;";
+            
             var result = await _connection.ExecuteAsync(query, new { Id = id });
            
             return result;
         }
         catch 
         {
-
             return 0;
         }
         finally
@@ -97,15 +91,16 @@ public class RoleRepository : BaseRepository, IRoleRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.roles(name, created_at, updated_at)" +
+            
+            string query = "INSERT INTO public.roles(name, created_at, updated_at) " +
                 "VALUES (@Name, @CreatedAt, @UpdatedAt);";
+            
             var result = await _connection.ExecuteAsync(query, entity);
             
             return result;
         }
         catch 
         {
-
             return 0;
         }
         finally

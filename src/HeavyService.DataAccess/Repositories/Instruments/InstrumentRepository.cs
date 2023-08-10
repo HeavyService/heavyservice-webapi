@@ -20,9 +20,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         }
         catch
         {
-
             return 0;
-
         }
         finally
         {
@@ -35,18 +33,18 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.instruments(" +
-                "name, description, image_path, price_per_day, region," +
-                " district, address, status, created_at, updated_at, user_id, phone_number)" +
-                "tVALUES (@Name, @Description, @ImagePath, @PricePerDay, @Region, @District, @Address, @Status," +
-                " @CreatedAt, @UpdatedAt, @UserId, @PhoneNumber);";
+            
+            string query = "INSERT INTO public.instruments(name, description, image_path, price_per_day, region, " +
+                "district, address, status, created_at, updated_at, user_id, phone_number) " +
+                    "VALUES (@Name, @Description, @ImagePath, @PricePerDay, @Region, @District, @Address, @Status, " +
+                        "@CreatedAt, @UpdatedAt, @UserId, @PhoneNumber);";
+            
             var result = await _connection.ExecuteAsync(query, entity);
            
             return result;
         }
         catch 
         {
-
             return 0;
         }
         finally
@@ -68,9 +66,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         }
         catch
         {
-
             return 0;
-
         }
         finally
         {
@@ -83,17 +79,17 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         try
         {
             await _connection.OpenAsync();
+            
             string query = $"SELECT * FROM instruments order by id desc " +
-                $"offset {0} limit {@params.PageSize}";
+                $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            
             var result = (await _connection.QueryAsync<InstrumentViewModel>(query)).ToList();
            
             return result;
         }
         catch
         {
-
             return new List<InstrumentViewModel>();
-
         }
         finally
         {
@@ -113,9 +109,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         }
         catch
         {
-
             return null;
-
         }
         finally
         {
@@ -133,19 +127,18 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "UPDATE public.instruments" +
-                "SET name=@Name, description=@Description, image_path=@ImagePath," +
-                " price_per_day=@PricePerDay, region=@Region, district=@District, address=@Address," +
-                " status=@Status, created_at=@CreatedAt, updated_at=@UpdatedAt, user_id=@UserId," +
-                " phone_number=@PhoneNumber" +
-                $"WHERE id = {id};";
+            
+            string query = "UPDATE public.instruments SET name=@Name, description=@Description, image_path=@ImagePath, " +
+                "price_per_day=@PricePerDay, region=@Region, district=@District, address=@Address, " +
+                    "status=@Status, created_at=@CreatedAt, updated_at=@UpdatedAt, user_id=@UserId, " +
+                        "phone_number=@PhoneNumber WHERE id = {id};";
+            
             var result = await _connection.ExecuteAsync(query, entity);
            
             return result;
         }
         catch 
         {
-
             return 0;
         }
         finally

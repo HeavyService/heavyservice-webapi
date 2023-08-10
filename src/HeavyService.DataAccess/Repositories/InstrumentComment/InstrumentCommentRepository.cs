@@ -14,8 +14,9 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         {
             await _connection.OpenAsync();
             string query = "SELECT COUNT(*) FROM instrument_comments;";
+            var result = await _connection.QuerySingleAsync<long>(query);
 
-            return await _connection.QuerySingleAsync<long>(query);
+            return result;
         }
         catch
         {
@@ -31,8 +32,11 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.instrument_comments(user_id, instrument_id, comment, created_at, updated_at, is_edited, reply_id)" +
-                "VALUES (@UserId, @InstrumentId, @Comment, @CreatedAt, @UpdatedAt, @IsEdited,  @ReplyId);";
+            
+            string query = "INSERT INTO public.instrument_comments(user_id, instrument_id, comment, created_at, " +
+                "updated_at, is_edited, reply_id) VALUES (@UserId, @InstrumentId, @Comment, @CreatedAt, @UpdatedAt, " +
+                    "@IsEdited,  @ReplyId);";
+            
             var result = await _connection.ExecuteAsync(query, entity);
             
             return result;
@@ -59,7 +63,6 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         }
         catch 
         {
-
             return 0;
         }
         finally
@@ -73,17 +76,17 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM admins order by id desc " +
-                $"offset {0} limit {@params.PageSize}";
+            
+            string query = $"SELECT * FROM instrument_comments order by id desc " +
+                $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            
             var result = (await _connection.QueryAsync<InstrumentCommentViewModel>(query)).ToList();
             
             return result;
         }
         catch
         {
-
             return new List<InstrumentCommentViewModel>();
-
         }
         finally
         {
@@ -103,9 +106,7 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         }
         catch
         {
-
             return null;
-
         }
         finally
         {
@@ -118,17 +119,18 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         try
         {
             await _connection.OpenAsync();
-            string query = "UPDATE public.instrument_comments" +
+            
+            string query = "UPDATE public.instrument_comments " +
                 "SET user_id = @UserId, instrument_id = @InstrumentId, comment = @Comment," +
-                " created_at = @CreatedAt, updated_at = @UpdatedAt, is_edited = @IsEdited, reply_id = @ReplyId" +
-                "WHERE id=@Id;";
+                    "created_at = @CreatedAt, updated_at = @UpdatedAt, is_edited = @IsEdited, reply_id = @ReplyId" +
+                        "WHERE id=@Id;";
+            
             var result = await _connection.ExecuteAsync(query, new { Id = id });
             
             return result;
         }
         catch 
         {
-
             return 0;
         }
         finally
