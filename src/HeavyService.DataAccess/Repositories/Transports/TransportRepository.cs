@@ -32,10 +32,12 @@ public class TransportRepository : BaseRepository, ITransportRepository
         try
         {
             await _connection.OpenAsync();
+            
             string query = "INSERT INTO public.transports(user_id, name, description, image_path, price_per_hours, " +
                 "region, district, address, status, created_at, updated_at, phone_number) " +
-                "VALUES (@UserId, @Name, @Description, @ImagePath, @PricePerHours, @Region, @District, " +
-                "@Address, @Status, @CreatedAt, @UpdatedAt, @PhoneNumber);";
+                    "VALUES (@UserId, @Name, @Description, @ImagePath, @PricePerHours, @Region, @District, " +
+                        "@Address, @Status, @CreatedAt, @UpdatedAt, @PhoneNumber);";
+            
             var result = await _connection.ExecuteAsync(query, entity);
             
             return result;
@@ -75,8 +77,10 @@ public class TransportRepository : BaseRepository, ITransportRepository
         try
         {
             await _connection.OpenAsync();
+            
             string query = $"SELECT * FROM transports order by id desc " +
                 $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            
             var result = (await _connection.QueryAsync<TransportViewModel>(query)).ToList();
             
             return result;
@@ -121,10 +125,12 @@ public class TransportRepository : BaseRepository, ITransportRepository
         try
         {
             await _connection.OpenAsync();
+            
             string query = "UPDATE public.transports SET user_id=@UserId, name= @Name, description=@Description, " +
                 "image_path= @ImagePath, price_per_hours=@PricePerHours, region=@Region, " +
-                "district=@District, address=@Address, status= @Status, created_at=@CreatedAt, " +
-                "updated_at=@UpdatedAt, phone_number=@PhoneNumber WHERE id = {id};";
+                    "district=@District, address=@Address, status= @Status, created_at=@CreatedAt, " +
+                        "updated_at=@UpdatedAt, phone_number=@PhoneNumber WHERE id = {id};";
+            
             var result = await _connection.ExecuteAsync(query, entity);
             
             return result;

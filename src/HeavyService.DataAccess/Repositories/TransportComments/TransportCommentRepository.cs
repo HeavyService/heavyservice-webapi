@@ -33,9 +33,11 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         try
         {
             await _connection.OpenAsync();
+            
             string query = "INSERT INTO public.transport_comments( " +
                 "user_id, transport_id, comment, created_at, updated_at, is_edited, reply_id) " +
-                "VALUES (@UserId, @TransportId, @Comment, @CreatedAt, @UpdatedAt, @IsEdited, @ReplayId);";
+                    "VALUES (@UserId, @TransportId, @Comment, @CreatedAt, @UpdatedAt, @IsEdited, @ReplayId);";
+            
             var result = await _connection.ExecuteAsync(query, entity);
            
             return result;
@@ -76,8 +78,10 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         try
         {
             await _connection.OpenAsync();
+            
             string query = $"SELECT * FROM transport_comments order by id desc " +
                 $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            
             var result = (await _connection.QueryAsync<TransportCommentViewmodel>(query)).ToList();
             
             return result;
@@ -117,9 +121,11 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         try
         {
             await _connection.OpenAsync();
+            
             string query = "UPDATE public.transport_comments SET  user_id=@UserId, transport_id=@TransportId, " +
                 "comment=@Comment, created_at=@CreatedAt, updated_at=@UpdatedAt, is_edited=@IsEdited, reply_id=@ReplayId " +
-                $"WHERE id={id};";
+                    $"WHERE id={id};";
+            
             var result = await _connection.ExecuteAsync(query, entity);
             
             return result;
