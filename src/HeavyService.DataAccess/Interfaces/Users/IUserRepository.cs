@@ -5,4 +5,8 @@ using HeavyService.Domain.Entities.Users;
 namespace HeavyService.DataAccess.Interfaces.Users;
 
 public interface IUserRepository : IRepository<User, UserViewModel>, ISearch<UserViewModel>, IGetAll<UserViewModel>
+{
+    public Task<User?> GetByEmailAsync(string email);
+    public Task<User?> GetByPhoneAsync(string phone);
+}
 {}
