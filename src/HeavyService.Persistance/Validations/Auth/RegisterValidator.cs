@@ -15,6 +15,7 @@ public class RegisterValidator : AbstractValidator<RegisterDto>
 
         RuleFor(dto => dto.Email).Must(email => EmailValidator.IsValid(email))
             .WithMessage("Email adress is invalid! ex: ____@gmail.com");
+        .WithMessage("The email was entered incorrectly! Ex: xxxx....@gmail.com");
 
         RuleFor(dto => dto.Password).Must(password => PasswordValidator.IsStrongPassword(password).IsValid)
             .WithMessage("Password is not strong password!");

@@ -1,4 +1,4 @@
-﻿using HeavyService.Domain.Exeptions;
+﻿using HeavyService.Application.Exeptions;
 using Newtonsoft.Json;
 
 namespace HeavyService.WebApi.Middlewares;
@@ -41,7 +41,6 @@ public class ExceptionHandlerMiddleware
             {
                 await httpContext.Response.WriteAsync("There is unknown error!");
             }
-            // write to logs
         }
     }
 }

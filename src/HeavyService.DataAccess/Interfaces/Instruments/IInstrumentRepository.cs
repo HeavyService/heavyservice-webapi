@@ -6,7 +6,5 @@ namespace HeavyService.DataAccess.Interfaces.Instruments
 {
     public interface IInstrumentRepository : IRepository<Instrument, InstrumentViewModel>, ISearch<InstrumentViewModel>,
         IGetAll<InstrumentViewModel>
-    {
-
-    }
+    {}
 }

@@ -5,7 +5,5 @@ using HeavyService.Domain.Entities.UserRoles;
 namespace HeavyService.DataAccess.Interfaces.UserRoles
 {
     public interface IUserRoleRepository : IRepository<UserRole, UserRoleViewModel>, IGetAll<UserRoleViewModel>
-    {
-
-    }
+    {}
 }
