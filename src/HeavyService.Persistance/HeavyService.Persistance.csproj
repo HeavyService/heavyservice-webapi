@@ -14,7 +14,14 @@
     <Folder Include="Dtos\" />
     <Folder Include="Attributes\" />
     <Folder Include="Filters\" />
-    <Folder Include="Validations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="FluentValidation" Version="11.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
   </ItemGroup>
 
 </Project>
