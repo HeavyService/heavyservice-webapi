@@ -13,7 +13,7 @@ using HeavyService.DataAccess.Repositories.Transports;
 using HeavyService.DataAccess.Repositories.UserRoles;
 using HeavyService.DataAccess.Repositories.Users;
 
-namespace RentHouse.WebApi.Configurations.Layer;
+namespace HeavyService.WebApi.Configurations.Layer;
 
 public static class DataAcsesConfiguration
 {

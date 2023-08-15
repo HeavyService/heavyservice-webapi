@@ -1,11 +1,12 @@
 ﻿using HeavyService.Service.Interfaces;
 using HeavyService.Service.Interfaces.Auth;
+using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.Notifications;
 using HeavyService.Service.Services.Auth;
 using HeavyService.Service.Services.Common;
 using HeavyService.Service.Services.Notifications;
 
-namespace RentHouse.WebApi.Configurations.Layer;
+namespace HeavyService.WebApi.Configurations.Layer;
 
 public static class ServiceLayerConfiguration
 {
