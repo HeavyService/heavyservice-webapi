@@ -25,15 +25,19 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.Email, user.Email),
             new Claim("Password", user.PasswordHash)
         };
+
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecurityKey"]!));
         var keyCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         int expiresHours = int.Parse(_configuration["Lifetime"]!);
-        var token = new JwtSecurityToken(
+        var token = new JwtSecurityToken
+        (
             issuer: _configuration["Issuer"],
             audience: _configuration["Audience"],
             claims: identityClaims,
-            expires: TimeHealpers.GetDateTime().AddHours(expiresHours),
-            signingCredentials: keyCredentials);
+            expires: TimeHelper.GetDateTime().AddHours(expiresHours),
+            signingCredentials: keyCredentials
+        );
+
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

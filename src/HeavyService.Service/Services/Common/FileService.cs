@@ -1,5 +1,4 @@
-﻿using HeavyService.DataAccess.Interfaces.Common;
-using HeavyService.Service.Helpers;
+﻿using HeavyService.Service.Helpers;
 using HeavyService.Service.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +13,6 @@ public class FileService : IFileService
     public FileService(IWebHostEnvironment env)
     {
         ROOTPATH = env.WebRootPath;
-    }
-
-    public Task<bool> DeleteAvatarAsync(string subpath)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<bool> DeleteImageAsync(string subpath)
@@ -37,11 +31,6 @@ public class FileService : IFileService
         else return false;
     }
 
-    public Task<string> UploadAvatarAsync(IFormFile avatar)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<string> UploadImageAsync(IFormFile image)
     {
         string newImageName = MediaHelpers.MakeImageName(image.FileName);
@@ -52,6 +41,5 @@ public class FileService : IFileService
         stream.Close();
 
         return subpath;
-
     }
 }

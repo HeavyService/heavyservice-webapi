@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HeavyService.WebApi.Controllers.Auth
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -17,6 +17,7 @@ namespace HeavyService.WebApi.Controllers.Auth
         {
             _authservise = authService;
         }
+
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto registerDto)
@@ -26,10 +27,12 @@ namespace HeavyService.WebApi.Controllers.Auth
             if (result.IsValid)
             {
                 var serviseResult = await _authservise.RegisterAsync(registerDto);
+
                 return Ok(new { serviseResult.Result, serviseResult.CachedMinutes });
             }
             else return BadRequest(result.Errors);
         }
+
         [HttpPost("register/send-code")]
         [AllowAnonymous]
         public async Task<IActionResult> SendCodeRegisterAsync(string email)
@@ -38,8 +41,10 @@ namespace HeavyService.WebApi.Controllers.Auth
             if (result == false) return BadRequest("Email number is invalid!");
 
             var serviceResult = await _authservise.SendCodeForRegisterAsync(email);
+
             return Ok(new { serviceResult.Result, serviceResult.CachedVerificationMinutes });
         }
+
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> LoginAsync([FromBody] LoginDto loginDto)
@@ -49,13 +54,16 @@ namespace HeavyService.WebApi.Controllers.Auth
             var valResult = validator.Validate(loginDto);
             if (valResult.IsValid == false) return BadRequest(valResult.Errors);
             var serviceResult = await _authservise.LoginAsync(loginDto);
+
             return Ok(new { serviceResult.Result, serviceResult.Token });
         }
+
         [HttpPost("register/verify")]
         [AllowAnonymous]
         public async Task<IActionResult> VerifyRegisterAsync([FromBody] VerifyDto verifyDto)
         {
             var serviceResult = await _authservise.VerifyRegisterAsync(verifyDto.Email, verifyDto.Code);
+
             return Ok(new { serviceResult.Result, serviceResult.Token });
         }
     }

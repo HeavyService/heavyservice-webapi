@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace RentHouse.WebApi.Configurations;
+namespace HeavyService.WebApi.Configurations;
 
 public static class JwtConfiguration
 {

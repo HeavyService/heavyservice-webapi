@@ -37,7 +37,7 @@ public class AuthService : IAuthService
     {
         var user = await _repository.GetByEmailAsync(loginDto.Email);
         if (user is null) throw new UserNotFoundExeption();
-        var hasherResult = PasswordHashr.Verify(loginDto.Password, user.PasswordHash, user.Salt);
+        var hasherResult = PasswordHasher.Verify(loginDto.Password, user.PasswordHash, user.Salt);
         if (hasherResult == false) throw new PasswordIncorrectException();
         string token = _tokenService.GenerateToken(user);
         return (Result: true, Token: token);
@@ -63,7 +63,7 @@ public class AuthService : IAuthService
         {
             VerificationDto verificationDto = new VerificationDto();
             verificationDto.Attempt = 0;
-            verificationDto.CreatedAt = TimeHealpers.GetDateTime();
+            verificationDto.CreatedAt = TimeHelper.GetDateTime();
             verificationDto.Code = CodeGenerater.GenerateRandomNumber();
             if (_memoryCache.TryGetValue(VERIFY_REGISTER_CACHE_KEY + email, out VerificationDto oldVerifcationDto))
             {
@@ -122,10 +122,10 @@ public class AuthService : IAuthService
         user.LastName = registerDto.LastName;
         user.Email = registerDto.Email;
         role.Name = IDentityRole.User.ToString();
-        var hasherResult = PasswordHashr.Hash(registerDto.Password);
+        var hasherResult = PasswordHasher.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;
-        user.CreatedAt = user.UpdatedAt = TimeHealpers.GetDateTime();
+        user.CreatedAt = user.UpdatedAt = TimeHelper.GetDateTime();
         var dbResult = await _repository.CreateAsync(user);
         return dbResult > 0;
     }
