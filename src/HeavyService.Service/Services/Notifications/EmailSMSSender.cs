@@ -3,9 +3,7 @@ using HeavyService.Service.Interfaces.Notifications;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using MailKit.Net.Smtp;
 using MimeKit.Text;
-using System.Net.Mail;
 
 namespace HeavyService.Service.Services.Notifications;
 public class EmailSMSSender : IEmailSMSSender
@@ -33,11 +31,13 @@ public class EmailSMSSender : IEmailSMSSender
             {
                 Text = emailMessage.Content.ToString()
             };
+
             using var smtp = new MailKit.Net.Smtp.SmtpClient();
             await smtp.ConnectAsync(PLATFORM, PORT, SecureSocketOptions.StartTls);
             await smtp.AuthenticateAsync(SENDER_EMAIL, PASSWORD);
             await smtp.SendAsync(mail);
             await smtp.DisconnectAsync(true);
+
             return true;
         }
         catch

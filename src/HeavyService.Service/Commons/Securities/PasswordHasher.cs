@@ -1,6 +1,6 @@
 ﻿namespace HeavyService.Service.Commons.Securities;
 
-public class PasswordHashr
+public class PasswordHasher
 {
     public static (string Hash, string Salt) Hash(string password)
     {
