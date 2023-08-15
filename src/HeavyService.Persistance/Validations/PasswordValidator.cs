@@ -25,6 +25,15 @@ public class PasswordValidator
         if (isLowerCaseExists == false) return (IsValid: false, Message: "Password should contain at least one Lower case!");
         if (isCharacterExists == false) return (IsValid: false, Message: "Password should contain at least one Symbol like (#@$%.!)!");
 
+        if (isUpperCaseExists == false) return (IsValid: false, Message: "Password should contain at least one " +
+            "Upper case!");
+        
+        if (isLowerCaseExists == false) return (IsValid: false, Message: "Password should contain at least one Lower " +
+            "case!");
+        
+        if (isCharacterExists == false) return (IsValid: false, Message: "Password should contain at least one Symbol " +
+            "like (#@$%.!)!");
+
         return (IsValid: true, "");
     }
 }

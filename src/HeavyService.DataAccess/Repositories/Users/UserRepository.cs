@@ -14,8 +14,9 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.OpenAsync();
             string query = "SELECT COUNT(*) FROM users;";
+            var result = await _connection.QuerySingleAsync<long>(query);
 
-            return await _connection.QuerySingleAsync<long>(query);
+            return result;
         }
         catch
         {
@@ -32,12 +33,15 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
+            
             string query = "INSERT INTO public.users " +
                 "(first_name, last_name, email, email_confirmed, password_hash, salt, created_at, updated_at) " +
-                    "VALUES (@FirstName, @LastName, @Email, @EmailConfirmed, " +
-                        "@PasswordHash, @Salt, @CreatedAt, @UpdatedAt);";
+                    "VALUES (@FirstName, @LastName, @Email, @EmailConfirmed, @PasswordHash, @Salt, " +
+                        "@CreatedAt, @UpdatedAt);";
 
-            return await _connection.ExecuteAsync(query, entity);
+            var result =  await _connection.ExecuteAsync(query, entity);
+
+            return result;
         }
         catch
         {
@@ -74,8 +78,10 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
+            
             string query = $"SELECT * FROM users ORDER BY id DESC " +
-                                $"offset{@params.SkipCount()} limit {@params.PageSize}";
+                $"offset{@params.SkipCount()} limit {@params.PageSize}";
+            
             var result = (await _connection.QueryAsync<UserViewModel>(query)).ToList();
 
             return result;
@@ -158,8 +164,10 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
+            
             string query = $"UPDATE public.users SET first_name=@FirstName, last_name=@LastName, email=@Email, " +
-                                $"created_at=@CreatedAt, updated_at=@UpdatedAt WHERE id = {id};";
+                $"created_at=@CreatedAt, updated_at=@UpdatedAt WHERE id = {id};";
+            
             var result = await _connection.ExecuteAsync(query, entity);
 
             return result;

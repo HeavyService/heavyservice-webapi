@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HeavyService.Persistance.Dtos.Instruments;
 using HeavyService.Persistance.Helpers;
+using HeavyService.Service.Helpers;
 
 namespace HeavyService.Persistance.Validations.Instruments;
 

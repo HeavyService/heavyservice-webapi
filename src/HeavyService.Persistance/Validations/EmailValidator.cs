@@ -18,5 +18,10 @@ public class EmailValidator
         {
             return false;
         }
+        if (email.EndsWith("@gmail.com") == false) return false;
+
+        if (email == "@gmail.com") return false;
+
+        return true;
     }
 }
