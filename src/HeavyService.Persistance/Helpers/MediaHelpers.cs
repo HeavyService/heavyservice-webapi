@@ -1,4 +1,3 @@
-﻿namespace HeavyService.Persistance.Helpers;
 ﻿namespace HeavyService.Service.Helpers;
 
 public class MediaHelpers
