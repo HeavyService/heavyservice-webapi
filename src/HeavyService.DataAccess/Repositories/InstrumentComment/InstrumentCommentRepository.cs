@@ -1,7 +1,9 @@
 ﻿using Dapper;
 using HeavyService.Application.Utils;
+using HeavyService.DataAccess.Interfaces;
 using HeavyService.DataAccess.Interfaces.InstrumentComments;
 using HeavyService.DataAccess.ViewModels;
+using HeavyService.Domain.Entities.InstrumentsComments;
 
 namespace HeavyService.DataAccess.Repositories.InstrumentComment;
 
@@ -113,28 +115,34 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         }
     }
 
+    public Task<Domain.Entities.InstrumentsComments.InstrumentComment> GetIdAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<int> UpdateAsync(long id, Domain.Entities.InstrumentsComments.InstrumentComment entity)
     {
-        try
-        {
-            await _connection.OpenAsync();
+        throw new NotImplementedException();
+        //try
+        //{
+        //    await _connection.OpenAsync();
 
-            string query = "UPDATE public.instrument_comments " +
-                "SET user_id = @UserId, instrument_id = @InstrumentId, comment = @Comment," +
-                    "created_at = @CreatedAt, updated_at = @UpdatedAt, is_edited = @IsEdited, reply_id = @ReplyId" +
-                        "WHERE id=@Id;";
+        //    string query = "UPDATE public.instrument_comments " +
+        //        "SET user_id = @UserId, instrument_id = @InstrumentId, comment = @Comment," +
+        //            "created_at = @CreatedAt, updated_at = @UpdatedAt, is_edited = @IsEdited, reply_id = @ReplyId" +
+        //                "WHERE id=@Id;";
 
-            var result = await _connection.ExecuteAsync(query, new { Id = id });
+        //    var result = await _connection.ExecuteAsync(query, new { Id = id });
 
-            return result;
-        }
-        catch
-        {
-            return 0;
-        }
-        finally
-        {
-            await _connection.CloseAsync();
-        }
+        //    return result;
+        //}
+        //catch
+        //{
+        //    return 0;
+        //}
+        //finally
+        //{
+        //    await _connection.CloseAsync();
+        //}
     }
 }

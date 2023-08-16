@@ -116,27 +116,33 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         }
     }
 
+    public Task<TransportComment> GetIdAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<int> UpdateAsync(long id, TransportComment entity)
     {
-        try
-        {
-            await _connection.OpenAsync();
-            
-            string query = "UPDATE public.transport_comments SET  user_id=@UserId, transport_id=@TransportId, " +
-                "comment=@Comment, created_at=@CreatedAt, updated_at=@UpdatedAt, is_edited=@IsEdited, reply_id=@ReplayId " +
-                    $"WHERE id={id};";
-            
-            var result = await _connection.ExecuteAsync(query, entity);
-            
-            return result;
-        }
-        catch 
-        {
-            return 0;
-        }
-        finally
-        {
-            await _connection.CloseAsync();
-        }
+        throw new NotImplementedException();
+        //try
+        //{
+        //    await _connection.OpenAsync();
+
+        //    string query = "UPDATE public.transport_comments SET  user_id=@UserId, transport_id=@TransportId, " +
+        //        "comment=@Comment, created_at=@CreatedAt, updated_at=@UpdatedAt, is_edited=@IsEdited, reply_id=@ReplayId " +
+        //            $"WHERE id={id};";
+
+        //    var result = await _connection.ExecuteAsync(query, entity);
+
+        //    return result;
+        //}
+        //catch 
+        //{
+        //    return 0;
+        //}
+        //finally
+        //{
+        //    await _connection.CloseAsync();
+        //}
     }
 }

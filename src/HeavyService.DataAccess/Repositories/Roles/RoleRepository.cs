@@ -109,4 +109,8 @@ public class RoleRepository : BaseRepository, IRoleRepository
         }
     }
 
+    public Task<Role> GetIdAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
 }

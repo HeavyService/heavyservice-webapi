@@ -146,4 +146,23 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
             await _connection.CloseAsync();
         }
     }
+    public async Task<Instrument> GetIdAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM instruments where id = @Id";
+            var result = await _connection.QuerySingleAsync<Instrument>(query, new { Id = id });
+
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
 }

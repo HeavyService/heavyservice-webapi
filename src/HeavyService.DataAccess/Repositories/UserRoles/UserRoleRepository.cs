@@ -132,4 +132,9 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
             await _connection.CloseAsync();
         }
     }
+
+    public Task<UserRole> GetIdAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
 }

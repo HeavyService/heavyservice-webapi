@@ -8,7 +8,7 @@ public class TransportCreateValidator : AbstractValidator<TransportCreateDto>
 {
     public TransportCreateValidator()
     {
-        RuleFor(dto => dto.UserId).NotEmpty().NotNull().WithMessage("User id field is required!");
+        //RuleFor(dto => dto.UserId).NotEmpty().NotNull().WithMessage("User id field is required!");
 
         RuleFor(dto => dto.Name).NotEmpty().NotNull().WithMessage("Name field is required!")
             .MinimumLength(3).WithMessage("Name must be more than 3 characters")

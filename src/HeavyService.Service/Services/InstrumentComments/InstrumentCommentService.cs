@@ -1,4 +1,5 @@
 ﻿using HeavyService.Application.Utils;
+using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.InstrumentsComments;
 using HeavyService.Persistance.Dtos.InstrumentComments;
 using HeavyService.Service.Interfaces.InstrumentComments;
@@ -17,6 +18,11 @@ public class InstrumentCommentService : IInstrumentCommentService
         throw new NotImplementedException();
     }
 
+    public Task<bool> CreateAsync(long instrumentId, InstrumentCommentCreateDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<bool> DeleteAsync(long id)
     {
         throw new NotImplementedException();
@@ -27,17 +33,27 @@ public class InstrumentCommentService : IInstrumentCommentService
         throw new NotImplementedException();
     }
 
-    public Task<InstrumentComment> GetAllAsync(Paginationparams @params)
+    public Task<IList<InstrumentComment>> GetAllAsync(Paginationparams @params)
     {
         throw new NotImplementedException();
     }
 
-    public Task<InstrumentComment> GetByIdAsync(long id)
+    public Task<IList<InstrumentComment>> GetByIdAsync(long id)
     {
         throw new NotImplementedException();
     }
 
     public Task<bool> UpdateAsync(long instrumentId, InstrumentCommentCreateDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<IList<InstrumentCommentViewModel>> IInstrumentCommentService.GetAllAsync(Paginationparams @params)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<IList<InstrumentCommentViewModel>> IInstrumentCommentService.GetByIdAsync(long id)
     {
         throw new NotImplementedException();
     }

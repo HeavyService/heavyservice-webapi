@@ -77,9 +77,13 @@ public class TransportRepository : BaseRepository, ITransportRepository
         try
         {
             await _connection.OpenAsync();
-            
-            string query = $"SELECT * FROM transports order by id desc " +
-                $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            string query = $"select users.first_name,users.last_name, " +
+                $"transports.name,transports.image_path," +
+                $"transports.price_per_hours,transports.district," +
+                $"transports.region,transports.address,transports.phone_number," +
+                $"transports.description from transports " +
+                $"join users on transports.user_id = users.id order by transports.id desc " +
+                $"offset 0 limit 30";
             
             var result = (await _connection.QueryAsync<TransportViewModel>(query)).ToList();
             
@@ -100,9 +104,35 @@ public class TransportRepository : BaseRepository, ITransportRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM transports where id = @Id";
+            string query = $"select users.first_name,users.last_name," +
+                $"transports.name,transports.image_path," +
+                $"transports.price_per_hours,transports.district," +
+                $"transports.region,transports.address,transports.phone_number," +
+                $"transports.description from transports " +
+                $"join users on transports.user_id = users.id " +
+                $"where transports.id = @Id";
             var result = await _connection.QuerySingleAsync<TransportViewModel>(query, new { Id = id });
             
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<Transport?> GetIdAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM transports where id = @Id";
+            var result = await _connection.QuerySingleAsync<Transport>(query, new { Id = id });
+
             return result;
         }
         catch

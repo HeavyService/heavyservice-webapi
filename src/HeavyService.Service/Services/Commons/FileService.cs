@@ -7,6 +7,7 @@ namespace HeavyService.Service.Services.Common;
 
 public class FileService : IFileService
 {
+    public readonly string MEDIA = "media";
     private readonly string IMAGE = "images";
     private readonly string ROOTPATH;
 
@@ -44,7 +45,7 @@ public class FileService : IFileService
     public async Task<string> UploadImageAsync(IFormFile image)
     {
         string newImageName = MediaHelpers.MakeImageName(image.FileName);
-        string subpath = Path.Combine(IMAGE, newImageName);
+        string subpath = Path.Combine(MEDIA,IMAGE, newImageName);
         string path = Path.Combine(ROOTPATH, subpath);
         var stream = new FileStream(path, FileMode.Create);
         await image.CopyToAsync(stream);

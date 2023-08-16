@@ -1,6 +1,7 @@
 ﻿using HeavyService.Application.Exeptions.Instruments;
 using HeavyService.Application.Utils;
 using HeavyService.DataAccess.Interfaces.Instruments;
+using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.Instruments;
 using HeavyService.Persistance.Dtos.Instruments;
 using HeavyService.Persistance.Helpers;
@@ -14,26 +15,22 @@ public class InstrumentService : IInstrumentService
 {
     private readonly IInstrumentRepository _repository;
     private readonly IFileService _fileServise;
-    private readonly IMemoryCache _memoryCache;
     private const int second = 30;
 
     public InstrumentService(IInstrumentRepository instrumentrepository,
-        IFileService fIleService,
-        IMemoryCache memorycache)
+        IFileService fIleService)
     {
         this._repository = instrumentrepository;
         this._fileServise = fIleService;
-        this._memoryCache = memorycache;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
 
     public async Task<bool> CreateAsync(InstrumentCreateDto dto)
     {
-        string imagepaht = await _fileServise.UploadImageAsync(dto.ImagePath);
-
+        string imagepath = await _fileServise.UploadImageAsync(dto.ImagePath);
         Instrument instrument = new Instrument()
         {
-            ImagePath = imagepaht,
+            ImagePath = imagepath,
             Name = dto.Name,
             Description = dto.Description,
             PricePerDay = dto.PricePerDay,
@@ -42,7 +39,9 @@ public class InstrumentService : IInstrumentService
             Address = dto.Address,
             Status = dto.Status,
             PhoneNumber = dto.PhoneNumber,
-            UserId = dto.UserId
+            CreatedAt = TimeHelper.GetDateTime(),
+            UpdatedAt = TimeHelper.GetDateTime(),
+            UserId = 6
         };
         var result = await _repository.CreateAsync(instrument);
         return result > 0;
@@ -58,23 +57,15 @@ public class InstrumentService : IInstrumentService
         var dbResult = await _repository.DeleteAsync(id);
         return dbResult > 0;
     }
-    public async Task<Instrument> GetByIdAsync(long instrumentId)
+    public async Task<InstrumentViewModel> GetByIdAsync(long instrumentId)
     {
-        if (_memoryCache.TryGetValue(instrumentId, out Instrument cacheinstrument))
-        {
-            return cacheinstrument;
-        }
-        else
-        {
-            var instrument = await _repository.GetByIdAsync(instrumentId);
-            if (instrument is null) throw new InstrumentNotFoundExeption();
-            _memoryCache.Set(instrumentId, instrument, TimeSpan.FromSeconds(second));
-            return instrument;
-        }
+        var instrument = await _repository.GetByIdAsync(instrumentId);
+        if (instrument is null) throw new InstrumentNotFoundExeption();
+        return instrument;
     }
     public async Task<bool> UpdateAsync(long instrumentId, InstrumentUpdateDto dto)
     {
-        var instrument = await _repository.GetByIdAsync(instrumentId);
+        var instrument = await _repository.GetIdAsync(instrumentId);
         if (instrument is null) throw new InstrumentNotFoundExeption();
         instrument.Description = dto.Description;
         instrument.Region = dto.Region;
@@ -92,7 +83,7 @@ public class InstrumentService : IInstrumentService
         var dbResult = await _repository.UpdateAsync(instrumentId, instrument);
         return dbResult > 0;
     }
-    public async Task<Instrument> GetAllAsync(Paginationparams @params)
+    public async Task<IList<InstrumentViewModel>> GetAllAsync(Paginationparams @params)
     {
         var instrument = await _repository.GetAllAsync(@params);
         return instrument;

@@ -154,6 +154,26 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
+    public async Task<User?> GetIdAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT FROM users WHERE id = @Id";
+            var result = await _connection.QuerySingleAsync<User>(query, new { Id = id });
+
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
     public Task<(int ItemsCount, IList<UserViewModel>)> SearchAsync(string search, Paginationparams @params)
     {
         throw new NotImplementedException();

@@ -43,6 +43,6 @@ public class InstrumentCreateValidator : AbstractValidator<InstrumentCreateDto>
         RuleFor(dto => dto.PhoneNumber).Must(phone => PhoneNumberValidotor.IsValid(phone))
             .WithMessage("Phone Number field is required!");
 
-        RuleFor(dto => dto.UserId).NotNull().NotEmpty().WithMessage("User id filed is required!");
+        //RuleFor(dto => dto.UserId).NotNull().NotEmpty().WithMessage("User id filed is required!");
     }
 }
