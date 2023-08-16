@@ -1,19 +1,22 @@
 ﻿using HeavyService.Application.Utils;
 using HeavyService.Persistance.Dtos.InstrumentComments;
+using HeavyService.Persistance.Dtos.TransportComments;
 using HeavyService.Persistance.Validations.InstrumentComments;
+using HeavyService.Persistance.Validations.TranportComments;
 using HeavyService.Service.Interfaces.InstrumentComments;
+using HeavyService.Service.Interfaces.TransportComments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HeavyService.WebApi.Controllers.InstrumentComment
+namespace HeavyService.WebApi.Controllers.TransportComments
 {
-    [Route("api/{comment}")]
+    [Route("api/comment")]
     [ApiController]
-    public class InstrumentCommentController : ControllerBase
+    public class TransportCommentController : ControllerBase
     {
-        private readonly IInstrumentCommentService _service;
+        private readonly ITransportCommentService _service;
         private readonly int MaxPageSize = 30;
-        public InstrumentCommentController(IInstrumentCommentService service)
+        public TransportCommentController(ITransportCommentService service)
         {
             this._service = service;
         }
@@ -24,9 +27,9 @@ namespace HeavyService.WebApi.Controllers.InstrumentComment
 
         [HttpPut("{commentId}")]
 
-        public async Task<IActionResult> UpdateAsync(long commentId, [FromForm] InstrumentCommentCreateDto dto)
+        public async Task<IActionResult> UpdateAsync(long commentId, [FromForm] TransportCommentDto dto)
         {
-            var updateValidator = new InstrumentCommentValidator();
+            var updateValidator = new TransportCommentValidator();
             var validationResult = updateValidator.Validate(dto);
             if (validationResult.IsValid) return Ok(await _service.UpdateAsync(commentId, dto));
             else return BadRequest(validationResult.Errors);
@@ -41,11 +44,11 @@ namespace HeavyService.WebApi.Controllers.InstrumentComment
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(long instrumentId,[FromForm] InstrumentCommentCreateDto dto)
+        public async Task<IActionResult> CreateAsyncs(long transportId,[FromForm] TransportCommentDto dto)
         {
-            var Valid = new InstrumentCommentValidator();
+            var Valid = new TransportCommentValidator();
             var result = Valid.Validate(dto);
-            if (result.IsValid) return Ok(await _service.CreateAsync(instrumentId,dto));
+            if (result.IsValid) return Ok(await _service.CreateAsync(transportId,dto));
             else { return BadRequest(result.Errors); }
         }
         [HttpDelete]

@@ -42,7 +42,6 @@ namespace HeavyService.WebApi.Controllers.Instruments
             => Ok(await _service.GetByIdAsync(instrumentId));
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAsyncs([FromForm] InstrumentCreateDto dto)
         {
             var Valid = new InstrumentCreateValidator();

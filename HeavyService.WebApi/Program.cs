@@ -2,8 +2,8 @@ using HeavyService.WebApi.Configurations;
 using HeavyService.WebApi.Configurations.Layer;
 using HeavyService.WebApi.Middlewares;
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        // Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Add services to the container.
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -40,4 +40,3 @@ app.MapControllers();
 
 app.Run();
 
- 

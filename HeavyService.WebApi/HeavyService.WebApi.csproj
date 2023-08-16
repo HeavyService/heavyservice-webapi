@@ -20,4 +20,8 @@
     <ProjectReference Include="..\src\HeavyService.Service\HeavyService.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\media\images\" />
+  </ItemGroup>
+
 </Project>
