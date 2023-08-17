@@ -1,5 +1,5 @@
 ﻿using HeavyService.Service.Helpers;
-using HeavyService.Service.Interfaces;
+using HeavyService.Service.Interfaces.Commons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using HeavyService.Persistance.Dtos.Instruments;
-using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Helpers;
 
 namespace HeavyService.Persistance.Validations.Instruments;
@@ -30,7 +29,7 @@ public class InstrumentUpdateValidator : AbstractValidator<InstrumentUpdateDto>
 
         int num = 0;
         RuleFor(dto => dto.PricePerDay).NotEmpty().NotNull().WithMessage("Price per day is required!")
-            .LessThan(num).WithMessage($"Price isn't less than {num}");
+            .Must(price => PriceValidator.IsValid(price)).WithMessage($"Price isn't less than {num}");
 
         RuleFor(dto => dto.Region).NotNull().NotEmpty().WithMessage("Region filed is required!")
             .MinimumLength(5).WithMessage("Region filed is required!");
@@ -43,7 +42,5 @@ public class InstrumentUpdateValidator : AbstractValidator<InstrumentUpdateDto>
 
         RuleFor(dto => dto.PhoneNumber).Must(phone => PhoneNumberValidotor.IsValid(phone))
             .WithMessage("Phone Number field is required!");
-
-        RuleFor(dto => dto.UserId).NotNull().NotEmpty().WithMessage("User id filed is required!");
     }
 }
