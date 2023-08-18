@@ -6,5 +6,7 @@ namespace HeavyService.DataAccess.Interfaces.Instruments
 {
     public interface IInstrumentRepository : IRepository<Instrument, InstrumentViewModel>, ISearch<InstrumentViewModel>,
         IGetAll<InstrumentViewModel>
-    {}
+    {
+        public Task<Instrument?> GetIdAsync(long id);
+    }
 }

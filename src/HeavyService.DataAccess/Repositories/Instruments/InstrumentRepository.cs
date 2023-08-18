@@ -80,8 +80,11 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         {
             await _connection.OpenAsync();
 
-            string query = $"SELECT * FROM instruments order by id desc " +
-                $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name," +
+                "instruments.image_path, instruments.price_per_day, instruments.district, instruments.region," +
+                    "instruments.address, instruments.phone_number, instruments.description, instruments.status FROM " +
+                        "instruments JOIN users ON instruments.user_id = users.id ORDER BY instruments.id DESC " +
+                            $"offset {@params.SkipCount()} limit {@params.PageSize}";
 
             var result = (await _connection.QueryAsync<InstrumentViewModel>(query)).ToList();
 
@@ -102,8 +105,32 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM instruments where id = @Id";
+            string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name, instruments.image_path," +
+                "instruments.price_per_day, instruments.district, instruments.region, instruments.address," +
+                    "instruments.phone_number, instruments.description, instruments.status FROM instruments JOIN users ON " +
+                        "instruments.user_id = users.id where id = @Id;";
+            
             var result = await _connection.QuerySingleAsync<InstrumentViewModel>(query, new { Id = id });
+
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<Instrument?> GetIdAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM instruments where id = @Id";
+            var result = await _connection.QuerySingleAsync<Instrument>(query, new { Id = id });
 
             return result;
         }
