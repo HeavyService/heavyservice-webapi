@@ -1,13 +1,24 @@
 ﻿using HeavyService.Application.Utils;
+using HeavyService.DataAccess.Interfaces.Transports;
 using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.TransportComments;
 using HeavyService.Persistance.Dtos.TransportComments;
+using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.TransportComments;
 
 namespace HeavyService.Service.Services.TransportComments;
 
 public class TransportCommentService : ITransportCommentService
 {
+    private readonly ITransportRepository _repository;
+    private readonly IPaginator _paginator;
+
+    public TransportCommentService(ITransportRepository repository,
+        IPaginator paginator)
+    {
+        this._repository = repository;
+        this._paginator = paginator;
+    }
     public Task<long> CountAsync()
     {
         throw new NotImplementedException();

@@ -4,11 +4,11 @@ public class UserAllReadyExeptions : AllReadyExistsExeption
 {
     public UserAllReadyExeptions()
     {
-        TitleMessage = "User olready exists";
+        TitleMessage = "User allready exists";
     }
 
     public UserAllReadyExeptions(string phone)
     {
-        TitleMessage = "This phone is already registered";
+        TitleMessage = "This email is allready registered";
     }
 }

@@ -34,7 +34,7 @@ namespace HeavyService.WebApi.Controllers.Users
             => Ok(await _service.GetByIdAsync(userId));
 
         [HttpDelete("{userId}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(long userId)
             => Ok(await _service.DeleteAsync(userId));
 
