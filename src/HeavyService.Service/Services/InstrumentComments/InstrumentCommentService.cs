@@ -1,13 +1,24 @@
 ﻿using HeavyService.Application.Utils;
+using HeavyService.DataAccess.Interfaces.Instruments;
 using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.InstrumentsComments;
 using HeavyService.Persistance.Dtos.InstrumentComments;
+using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.InstrumentComments;
 
 namespace HeavyService.Service.Services.InstrumentComments;
 
 public class InstrumentCommentService : IInstrumentCommentService
 {
+    private readonly IInstrumentRepository _repository;
+    private readonly IPaginator _paginator;
+
+    public InstrumentCommentService(IInstrumentRepository instrumentRepository,
+        IPaginator paginator)
+    {
+        this._repository = instrumentRepository;
+        this._paginator = paginator;
+    }
     public Task<long> CountAsync()
     {
         throw new NotImplementedException();
