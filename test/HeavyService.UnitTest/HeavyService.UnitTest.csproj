@@ -25,4 +25,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\HeavyService.Persistance\HeavyService.Persistance.csproj" />
+  </ItemGroup>
+
 </Project>
