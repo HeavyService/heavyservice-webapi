@@ -63,7 +63,7 @@ public class AuthService : IAuthService
         {
             VerificationDto verificationDto = new VerificationDto();
             verificationDto.Attempt = 0;
-            verificationDto.CreatedAt = TimeHealpers.GetDateTime();
+            verificationDto.CreatedAt = TimeHelper.GetDateTime();
             verificationDto.Code = CodeGenerater.GenerateRandomNumber();
             if (_memoryCache.TryGetValue(VERIFY_REGISTER_CACHE_KEY + email, out VerificationDto oldVerifcationDto))
             {
@@ -125,7 +125,7 @@ public class AuthService : IAuthService
         var hasherResult = PasswordHashr.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;
-        user.CreatedAt = user.UpdatedAt = TimeHealpers.GetDateTime();
+        user.CreatedAt = user.UpdatedAt = TimeHelper.GetDateTime();
         var dbResult = await _repository.CreateAsync(user);
         return dbResult > 0;
     }

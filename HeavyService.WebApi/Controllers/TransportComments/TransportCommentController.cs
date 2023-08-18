@@ -1,9 +1,6 @@
 ﻿using HeavyService.Application.Utils;
-using HeavyService.Persistance.Dtos.InstrumentComments;
 using HeavyService.Persistance.Dtos.TransportComments;
-using HeavyService.Persistance.Validations.InstrumentComments;
 using HeavyService.Persistance.Validations.TranportComments;
-using HeavyService.Service.Interfaces.InstrumentComments;
 using HeavyService.Service.Interfaces.TransportComments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,14 +41,14 @@ namespace HeavyService.WebApi.Controllers.TransportComments
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsyncs(long transportId,[FromForm] TransportCommentDto dto)
+        public async Task<IActionResult> CreateAsyncs(long transportId, [FromForm] TransportCommentDto dto)
         {
             var Valid = new TransportCommentValidator();
             var result = Valid.Validate(dto);
-            if (result.IsValid) return Ok(await _service.CreateAsync(transportId,dto));
+            if (result.IsValid) return Ok(await _service.CreateAsync(transportId, dto));
             else { return BadRequest(result.Errors); }
         }
-        [HttpDelete]
+        [HttpDelete("{commentId}")]
         public async Task<IActionResult> DeleteAsync(long commentId)
             => Ok(await _service.DeleteAsync(commentId));
 

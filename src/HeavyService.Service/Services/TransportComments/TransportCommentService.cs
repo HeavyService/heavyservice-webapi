@@ -1,55 +1,64 @@
-﻿using HeavyService.Application.Utils;
+﻿using HeavyService.Application.Exeptions.Comments;
+using HeavyService.Application.Exeptions.Instruments;
+using HeavyService.Application.Utils;
+using HeavyService.DataAccess.Interfaces.TransportComments;
 using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.TransportComments;
 using HeavyService.Persistance.Dtos.TransportComments;
+using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Interfaces.TransportComments;
 
 namespace HeavyService.Service.Services.TransportComments;
-
 public class TransportCommentService : ITransportCommentService
 {
-    public Task<long> CountAsync()
+    private readonly ITransportCommentRepository _repository;
+    public TransportCommentService(ITransportCommentRepository repository)
     {
-        throw new NotImplementedException();
+        this._repository = repository;
     }
-
-    public Task<bool> CreateAsync(long transportId, TransportCommentDto dto)
+    public async Task<long> CountAsync() => await _repository.CountAsync();
+    public async Task<bool> CreateAsync(long transportId, TransportCommentDto dto)
     {
-        throw new NotImplementedException();
+        TransportComment comment = new TransportComment()
+        {
+            UserId = dto.UserId,
+            TransportId = transportId,
+            ReplyId = dto.ReplyId,
+            Comment = dto.Comment,
+            IsEdited = dto.IsEdited,
+            CreatedAt = TimeHelper.GetDateTime(),
+            UpdatedAt = TimeHelper.GetDateTime()
+        };
+        var result = await _repository.CreateAsync(comment);
+        return result > 0;
     }
-
-    public Task<bool> DeleteAsync(long transportId)
+    public async Task<bool> DeleteAsync(long transportId)
     {
-        throw new NotImplementedException();
+        var comment = await _repository.GetByIdAsync(transportId);
+        if (comment is null) throw new InstrumentNotFoundExeption();
+        var dbResult = await _repository.DeleteAsync(transportId);
+        return dbResult > 0;
     }
-
-    public Task<TransportComment> GetAllAsync(long transportId)
+    public async Task<IList<TransportCommentViewmodel>> GetAllAsync(Paginationparams @params)
     {
-        throw new NotImplementedException();
+        var result = await _repository.GetAllAsync(@params);
+        return result;
     }
-
-    public Task<TransportComment> GetAllAsync(Paginationparams @params)
+    public async Task<IList<TransportCommentViewmodel>> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var comment = await _repository.GetByIdAsync(id);
+        if (comment is null) throw new CommentNotFoundExeption();
+        return (IList<TransportCommentViewmodel>)comment;
     }
-
-    public Task<TransportComment> GetByIdAsync(long id)
+    public async Task<bool> UpdateAsync(long transportId, TransportCommentDto dto)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> UpdateAsync(long transportId, TransportCommentDto dto)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<TransportCommentViewmodel> ITransportCommentService.GetAllAsync(Paginationparams @params)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<TransportCommentViewmodel> ITransportCommentService.GetByIdAsync(long id)
-    {
-        throw new NotImplementedException();
+        var transportcomment = await _repository.GetIdAsync(transportId);
+        if (transportcomment is null) throw new InstrumentNotFoundExeption();
+        transportcomment.UserId = dto.UserId;
+        transportcomment.ReplyId = dto.ReplyId;
+        transportcomment.Comment = dto.Comment;
+        transportcomment.UpdatedAt = TimeHelper.GetDateTime();
+        var dbResult = await _repository.UpdateAsync(transportId, transportcomment);
+        return dbResult > 0;
     }
 }

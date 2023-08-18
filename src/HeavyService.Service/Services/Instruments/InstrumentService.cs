@@ -7,16 +7,12 @@ using HeavyService.Persistance.Dtos.Instruments;
 using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.Instruments;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace HeavyService.Service.Services.Instruments;
-
 public class InstrumentService : IInstrumentService
 {
     private readonly IInstrumentRepository _repository;
     private readonly IFileService _fileServise;
-    private const int second = 30;
-
     public InstrumentService(IInstrumentRepository instrumentrepository,
         IFileService fIleService)
     {
@@ -24,7 +20,6 @@ public class InstrumentService : IInstrumentService
         this._fileServise = fIleService;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
-
     public async Task<bool> CreateAsync(InstrumentCreateDto dto)
     {
         string imagepath = await _fileServise.UploadImageAsync(dto.ImagePath);

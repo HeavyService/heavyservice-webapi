@@ -34,9 +34,10 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         {
             await _connection.OpenAsync();
             
-            string query = "INSERT INTO public.transport_comments( " +
-                "user_id, transport_id, comment, created_at, updated_at, is_edited, reply_id) " +
-                    "VALUES (@UserId, @TransportId, @Comment, @CreatedAt, @UpdatedAt, @IsEdited, @ReplayId);";
+            string query = "INSERT INTO public.transport_comments(" +
+                "user_id, transport_id, comment, created_at, updated_at," +
+                " is_edited, reply_id)" +
+                "VALUES (@UserId, @TransportId, @Comment, @CreatedAt, @UpdatedAt, @IsEdited, @ReplyId);";
             
             var result = await _connection.ExecuteAsync(query, entity);
            

@@ -32,7 +32,7 @@ public class TokenService : ITokenService
             issuer: _configuration["Issuer"],
             audience: _configuration["Audience"],
             claims: identityClaims,
-            expires: TimeHealpers.GetDateTime().AddHours(expiresHours),
+            expires: TimeHelper.GetDateTime().AddHours(expiresHours),
             signingCredentials: keyCredentials);
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
