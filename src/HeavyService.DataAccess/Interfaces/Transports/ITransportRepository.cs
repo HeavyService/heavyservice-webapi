@@ -6,5 +6,7 @@ namespace HeavyService.DataAccess.Interfaces.Transports
 {
     public interface ITransportRepository : IRepository<Transport, TransportViewModel>, ISearch<TransportViewModel>,
         IGetAll<TransportViewModel>
-    {}
+    {
+        public Task<Transport?> GetIdAsync(long id);    
+    }
 }

@@ -79,7 +79,7 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.OpenAsync();
             
-            string query = $"SELECT * FROM users ORDER BY id DESC " +
+            string query = "SELECT first_name, last_name, email FROM users ORDER BY id DESC " +
                 $"offset{@params.SkipCount()} limit {@params.PageSize}";
             
             var result = (await _connection.QueryAsync<UserViewModel>(query)).ToList();
@@ -120,7 +120,7 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT FROM users WHERE id = @Id";
+            string query = "SELECT first_name, last_name, email FROM users WHERE id = @Id";
             var result = await _connection.QuerySingleAsync<UserViewModel>(query, new { Id = id });
 
             return result;
@@ -143,6 +143,26 @@ public class UserRepository : BaseRepository, IUserRepository
             string query = "SELECT * FROM users where phone_number = @PhoneNumber";
             var data = await _connection.QuerySingleAsync<User>(query, new { PhoneNumber = phone });
             return data;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<User?> GetIdAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT FROM users WHERE id = @Id";
+            var result = await _connection.QuerySingleAsync<User>(query, new { Id = id });
+
+            return result;
         }
         catch
         {

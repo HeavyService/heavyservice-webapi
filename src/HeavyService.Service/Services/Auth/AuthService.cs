@@ -54,6 +54,7 @@ public class AuthService : IAuthService
         else
         {
             _memoryCache.Set(REGISTER_CACHE_KEY + dto.Email, dto, TimeSpan.FromMinutes(CACHED_MINUTES_FOR_REGISTER));
+            user.EmailConfirmed = true;
         }
         return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
     }

@@ -10,5 +10,6 @@ public interface IUserservice
     public Task<IList<UserViewModel>> GetAllAsync(Paginationparams @params);
     public Task<bool> DeleteAsync(long userId);
     public Task<long> CountAsync();
-    public Task<UserViewModel> GetByIdAsync(long id);
+    public Task<UserViewModel> GetByIdAsync(long userId);
+    public Task<bool> UpdateAsync(long userId, UserUpdateDto dto);
 }
