@@ -30,7 +30,6 @@ public class UserService : IUserservice
             FirstName = dto.FirstName,
             LastName = dto.LastName,
             Email = dto.Email,
-            EmailConfirmed = dto.EmailConfirmed
         };
         var result = await _repository.CreateAsync(user);
 
