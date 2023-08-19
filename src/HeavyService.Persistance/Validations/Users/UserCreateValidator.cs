@@ -16,9 +16,7 @@ namespace HeavyService.Persistance.Validations.Users
             .MaximumLength(50).WithMessage("Lastname must be less than 50 characters");
 
             RuleFor(dto => dto.Email).NotNull().NotEmpty().WithMessage("Email filed is required!")
-            .MinimumLength(10).WithMessage("Email must be more than 3 characters");
-
-            RuleFor(dto => dto.EmailConfirmed).NotNull().NotEmpty().WithMessage("Email Confirmed filed is required!");
+            .Must(email => EmailValidator.IsValid(email)).WithMessage("Email adress is invalid! ex: ____@gmail.com");
 
             RuleFor(dto => dto.Password).Must(password => PasswordValidator.IsStrongPassword(password).IsValid)
                 .WithMessage("Password isn't strong password");

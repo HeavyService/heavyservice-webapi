@@ -4,20 +4,20 @@ using Xunit;
 
 namespace HeavyService.UnitTest.ValidatorTest.Users;
 
-public class UserCreateValidatorTest
+public class UserUpdateValidatorTest
 {
     [Theory]
     [InlineData("bvhjfvbjhvbsdhbvjhsbvjhdbvhdbvjhdsbvhsbjvbdvjbhdsbjvjdsbvjhs")]
     [InlineData("bfgbgfgjhjhjhgjghjhgjhgjsbvjhdbvhdbvjhdsbvhsbjvbdvjbhdsbjvjdsbvjhs")]
     public void ShouldReturnWrongFirstName(string firstname)
     {
-        var dto = new UserCreateDto();
+        var dto = new UserUpdateDto();
         dto.FirstName = firstname;
         dto.LastName = "AAAAA";
         dto.Email = "akmalovaziz844@gmail.com";
         dto.Password = "AAaa11@@";
 
-        var validator = new UserCreateValidator();
+        var validator = new UserUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -28,13 +28,13 @@ public class UserCreateValidatorTest
     [InlineData("dvmkdvkdvkdvdvdvmk")]
     public void ShouldReturnValidFirstName(string firstname)
     {
-        var dto = new UserCreateDto();
+        var dto = new UserUpdateDto();
         dto.FirstName = firstname;
         dto.LastName = "AAAAA";
         dto.Email = "akmalovaziz844@gmail.com";
         dto.Password = "AAaa11@@";
 
-        var validator = new UserCreateValidator();
+        var validator = new UserUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -44,13 +44,13 @@ public class UserCreateValidatorTest
     [InlineData("bfgbgfgjhjhjhgjghjhgjhgjsbvjhdbvhdbvjhdsbvhsbjvbdvjbhdsbjvjdsbvjhs")]
     public void ShouldReturnWrongLastName(string lastname)
     {
-        var dto = new UserCreateDto();
+        var dto = new UserUpdateDto();
         dto.FirstName = "Akmalov";
         dto.LastName = lastname;
         dto.Email = "akmalovaziz844@gmail.com";
         dto.Password = "AAaa11@@";
 
-        var validator = new UserCreateValidator();
+        var validator = new UserUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -61,13 +61,13 @@ public class UserCreateValidatorTest
     [InlineData("dvmkdvkdvkdvdvdvmk")]
     public void ShouldReturnValidLastName(string lastname)
     {
-        var dto = new UserCreateDto();
+        var dto = new UserUpdateDto();
         dto.FirstName = "Abdug'aniyev";
         dto.LastName = lastname;
         dto.Email = "akmalovaziz844@gmail.com";
         dto.Password = "AAaa11@@";
 
-        var validator = new UserCreateValidator();
+        var validator = new UserUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -80,13 +80,13 @@ public class UserCreateValidatorTest
     [InlineData("akmalovaziz@gmailcom")]
     public void ShouldReturnWrongEmail(string email)
     {
-        var dto = new UserCreateDto();
+        var dto = new UserUpdateDto();
         dto.FirstName = "Aziz";
         dto.LastName = "Akmalov";
         dto.Email = email;
         dto.Password = "AAaa11@@";
 
-        var validator = new UserCreateValidator();
+        var validator = new UserUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -97,13 +97,13 @@ public class UserCreateValidatorTest
     [InlineData("aaa123@gmail.com")]
     public void ShouldReturnValidEmail(string email)
     {
-        var dto = new UserCreateDto();
+        var dto = new UserUpdateDto();
         dto.FirstName = "Abdurahim";
         dto.LastName = "Abdug'aniyev";
         dto.Email = email;
         dto.Password = "AAaa11@@";
 
-        var validator = new UserCreateValidator();
+        var validator = new UserUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -117,13 +117,13 @@ public class UserCreateValidatorTest
     [InlineData("12345678")]
     public void ShouldReturnWrongPassword(string password)
     {
-        var dto = new UserCreateDto();
+        var dto = new UserUpdateDto();
         dto.FirstName = "Aziz";
         dto.LastName = "Akmalov";
         dto.Email = "aaaa@gmail.com";
         dto.Password = password;
 
-        var validator = new UserCreateValidator();
+        var validator = new UserUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -135,13 +135,13 @@ public class UserCreateValidatorTest
     [InlineData("Akmalov_5977")]
     public void ShouldReturnValidPassword(string password)
     {
-        var dto = new UserCreateDto();
+        var dto = new UserUpdateDto();
         dto.FirstName = "Abdurahim";
         dto.LastName = "Abdug'aniyev";
         dto.Email = "aaaa@gmail.com";
         dto.Password = password;
 
-        var validator = new UserCreateValidator();
+        var validator = new UserUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace HeavyService.UnitTest.ValidatorTest.Transports;
 
-public class TransportCreateValidatorTest
+public class TransportUpdateValidatorTest
 {
     [Theory]
     [InlineData("a")]
@@ -16,7 +16,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = name;
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -27,7 +27,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -40,7 +40,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = name;
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -51,7 +51,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -67,7 +67,7 @@ public class TransportCreateValidatorTest
         byte[] byteImage = Encoding.UTF8.GetBytes("we sell an electronic products to our clients");
         long imageSizeInBytes = (long)(MaxImageSizeMB * 1024 * 1024 + 1);
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, imageSizeInBytes, "data", "file.png");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -78,7 +78,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -94,7 +94,7 @@ public class TransportCreateValidatorTest
         byte[] byteImage = Encoding.UTF8.GetBytes("we sell an electronic products to our clients");
         long imageSizeInBytes = (long)(MaxImageSizeMB * 1024 * 1024);
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, imageSizeInBytes, "data", "file.png");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -105,7 +105,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -123,7 +123,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", imagename);
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -134,7 +134,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -149,7 +149,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", imagename);
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -160,7 +160,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -172,7 +172,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -183,7 +183,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -196,7 +196,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -207,7 +207,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -221,7 +221,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -232,7 +232,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -245,7 +245,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -256,7 +256,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -270,7 +270,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -281,7 +281,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -294,7 +294,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -305,7 +305,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -319,7 +319,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -330,7 +330,7 @@ public class TransportCreateValidatorTest
         dto.District = district;
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -343,7 +343,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -354,7 +354,7 @@ public class TransportCreateValidatorTest
         dto.District = district;
         dto.PhoneNumber = "+998998545977";
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
@@ -369,7 +369,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -380,7 +380,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = phonenumber;
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.False(result.IsValid);
     }
@@ -394,7 +394,7 @@ public class TransportCreateValidatorTest
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
-        var dto = new TransportCreateDto();
+        var dto = new TransportUpdateDto();
 
         dto.Name = "aaaaaaa";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
@@ -405,7 +405,7 @@ public class TransportCreateValidatorTest
         dto.District = "Olmazor";
         dto.PhoneNumber = phonenumber;
 
-        var validator = new TransportCreateValidator();
+        var validator = new TransportUpdateValidator();
         var result = validator.Validate(dto);
         Assert.True(result.IsValid);
     }
