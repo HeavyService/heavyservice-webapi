@@ -24,7 +24,7 @@ namespace HeavyService.WebApi.Controllers.Transports
             => Ok(await _service.GetAllAsync(new Paginationparams(page, MaxPageSize)));
 
         [HttpPut("{transportId}")]
-        [Authorize(Roles = "User")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateAsync(long transportId, [FromForm] TransportUpdateDto dto)
         {
             var updateValidator = new TransportUpdateValidator();
@@ -55,7 +55,7 @@ namespace HeavyService.WebApi.Controllers.Transports
         }
 
         [HttpDelete("{transportId}")]
-        [Authorize(Roles = "User")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(long transportId)
             => Ok(await _service.DeleteAsync(transportId));
     }

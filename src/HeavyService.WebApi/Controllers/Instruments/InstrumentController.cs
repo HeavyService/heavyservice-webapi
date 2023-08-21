@@ -25,7 +25,7 @@ namespace HeavyService.WebApi.Controllers.Instruments
             => Ok(await _service.GetAllAsync(new Paginationparams(page, MaxPageSize)));
 
         [HttpPut("{instrumentId}")]
-        [Authorize(Roles = "User")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateAsync(long instrumentId, [FromForm] InstrumentUpdateDto dto)
         {
             var updateValidator = new InstrumentUpdateValidator();
@@ -57,7 +57,7 @@ namespace HeavyService.WebApi.Controllers.Instruments
         }
 
         [HttpDelete("{instrumentId}")]
-        [Authorize(Roles = "User")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(long instrumentid)
             => Ok(await _service.DeleteAsync(instrumentid));
     }

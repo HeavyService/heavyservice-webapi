@@ -1,4 +1,5 @@
-﻿using HeavyService.Domain.Entities.Users;
+﻿using HeavyService.DataAccess.Repositories.UserRoles;
+using HeavyService.Domain.Entities.Users;
 using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Interfaces.Auth;
 using Microsoft.Extensions.Configuration;
@@ -16,14 +17,17 @@ public class TokenService : ITokenService
     {
         _configuration = configuration.GetSection("Jwt");
     }
-    public string GenerateToken(User user)
+    public async Task<string> GenerateToken(User user)
     {
+        var role = new UserRoleRepository();
+        var abc = await role.GetByUserIdAsync(user.Id);
         var identityClaims = new Claim[]
         {
+            new Claim("Id", user.Id.ToString()),
             new Claim("FirstName", user.FirstName),
             new Claim("Lastname", user.LastName),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim("Password", user.PasswordHash)
+            new Claim(ClaimTypes.Role, abc.Name.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecurityKey"]!));

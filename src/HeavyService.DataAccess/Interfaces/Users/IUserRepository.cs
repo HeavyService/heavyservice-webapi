@@ -9,4 +9,5 @@ public interface IUserRepository : IRepository<User, UserViewModel>, ISearch<Use
     public Task<User?> GetByEmailAsync(string email);
     public Task<User?> GetByPhoneAsync(string phone);
     public Task<User?> GetIdAsync(long id);
+    public Task<User?> GetLastIdAsync();
 }
