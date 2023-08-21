@@ -2,9 +2,8 @@
 
 namespace HeavyService.DataAccess.ViewModels;
 
-public class UserRoleViewModel : AudiTable
+public class UserRoleViewModel
 {
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
+    public long Id { get; set; }
     public string Name { get; set; } = string.Empty;
 }

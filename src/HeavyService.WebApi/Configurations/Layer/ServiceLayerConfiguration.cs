@@ -3,12 +3,14 @@ using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.Instruments;
 using HeavyService.Service.Interfaces.Notifications;
 using HeavyService.Service.Interfaces.Transports;
+using HeavyService.Service.Interfaces.Users;
 using HeavyService.Service.Services.Auth;
 using HeavyService.Service.Services.Common;
 using HeavyService.Service.Services.Commons;
 using HeavyService.Service.Services.Instruments;
 using HeavyService.Service.Services.Notifications;
 using HeavyService.Service.Services.Transports;
+using HeavyService.Service.Services.Users;
 
 namespace HeavyService.WebApi.Configurations.Layer;
 
@@ -18,6 +20,7 @@ public static class ServiceLayerConfiguration
     {
         //-> DI containers, IoC containers
         builder.Services.AddScoped<IFileService, FileService>();
+        builder.Services.AddScoped<IUserservice, UserService>();
         builder.Services.AddScoped<IEmailSMSSender, EmailSMSSender>();
         builder.Services.AddScoped<IInstrumentService, InstrumentService>();
         builder.Services.AddScoped<ITransportService, TransportService>();

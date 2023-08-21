@@ -3,5 +3,5 @@
 namespace HeavyService.Service.Interfaces.Auth;
 public interface ITokenService
 {
-    public string GenerateToken(User user);
+    public Task<string> GenerateToken(User user);
 }

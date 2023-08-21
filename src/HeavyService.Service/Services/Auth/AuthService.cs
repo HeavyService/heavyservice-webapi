@@ -1,9 +1,10 @@
 ﻿using HeavyService.Application.Exeptions.Auth;
 using HeavyService.Application.Exeptions.Users;
 using HeavyService.DataAccess.Interfaces.Users;
+using HeavyService.DataAccess.Repositories.UserRoles;
 using HeavyService.Domain.Entities.Roles;
+using HeavyService.Domain.Entities.UserRoles;
 using HeavyService.Domain.Entities.Users;
-using HeavyService.Domain.Enums;
 using HeavyService.Persistance.Dtos.Auth;
 using HeavyService.Persistance.Dtos.Notifications;
 using HeavyService.Persistance.Dtos.Securities;
@@ -39,7 +40,7 @@ public class AuthService : IAuthService
         if (user is null) throw new UserNotFoundExeption();
         var hasherResult = PasswordHasher.Verify(loginDto.Password, user.PasswordHash, user.Salt);
         if (hasherResult == false) throw new PasswordIncorrectException();
-        string token = _tokenService.GenerateToken(user);
+        string token = await _tokenService.GenerateToken(user);
         return (Result: true, Token: token);
     }
     public async Task<(bool Result, int CachedMinutes)> RegisterAsync(RegisterDto dto)
@@ -54,7 +55,6 @@ public class AuthService : IAuthService
         else
         {
             _memoryCache.Set(REGISTER_CACHE_KEY + dto.Email, dto, TimeSpan.FromMinutes(CACHED_MINUTES_FOR_REGISTER));
-            user.EmailConfirmed = true;
         }
         return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
     }
@@ -97,9 +97,10 @@ public class AuthService : IAuthService
                     if (dbResult is true)
                     {
                         var user = await _repository.GetByEmailAsync(email);
-                        string token = _tokenService.GenerateToken(user);
+                        string token = await _tokenService.GenerateToken(user);
                         return (Result: true, Token: token);
                     }
+
                     return (Result: dbResult, Token: "");
                 }
                 else
@@ -108,6 +109,7 @@ public class AuthService : IAuthService
                     verificationDto.Attempt++;
                     _memoryCache.Set(VERIFY_REGISTER_CACHE_KEY + email, verificationDto,
                         TimeSpan.FromMinutes(CACHED_MINUTES_FOR_VERIFICATION));
+
                     return (Result: false, Token: "");
                 }
             }
@@ -122,12 +124,25 @@ public class AuthService : IAuthService
         user.FirstName = registerDto.FirstName;
         user.LastName = registerDto.LastName;
         user.Email = registerDto.Email;
-        role.Name = IDentityRole.User.ToString();
+        user.EmailConfirmed = true;
+        user.Role = "User";
         var hasherResult = PasswordHasher.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;
         user.CreatedAt = user.UpdatedAt = TimeHelper.GetDateTime();
         var dbResult = await _repository.CreateAsync(user);
+        var id = await _repository.GetLastIdAsync();
+
+        var UserRoleRepasitortuy = new UserRoleRepository();
+        var Entity = new UserRole()
+        {
+            UserId = id.Id,
+            RoleId = 2,
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = user.UpdatedAt
+        };
+        await UserRoleRepasitortuy.CreateAsync(Entity);
+
         return dbResult > 0;
     }
 }

@@ -4,6 +4,7 @@ public class User : AudiTable
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
+    public string Role { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public bool EmailConfirmed { get; set; }
     public string PasswordHash { get; set; } = string.Empty;

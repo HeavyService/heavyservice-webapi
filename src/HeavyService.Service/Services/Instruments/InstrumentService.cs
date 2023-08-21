@@ -39,9 +39,9 @@ public class InstrumentService : IInstrumentService
             Address = dto.Address,
             Status = dto.Status,
             PhoneNumber = dto.PhoneNumber,
+            UserId = dto.UserId,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime(),
-            UserId = 6
         };
         var result = await _repository.CreateAsync(instrument);
         

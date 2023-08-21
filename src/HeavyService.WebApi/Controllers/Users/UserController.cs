@@ -39,7 +39,7 @@ namespace HeavyService.WebApi.Controllers.Users
             => Ok(await _service.DeleteAsync(userId));
 
         [HttpPut("{userId}")]
-        [Authorize(Roles = "User")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateAsync(long userId, [FromForm] UserUpdateDto dto)
         {
             var userValidator = new UserUpdateValidator();

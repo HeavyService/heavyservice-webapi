@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HeavyService.Application.Utils;
 using HeavyService.DataAccess.Interfaces.Users;
+using HeavyService.DataAccess.Repositories.UserRoles;
 using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.Users;
 
@@ -57,6 +58,8 @@ public class UserRepository : BaseRepository, IUserRepository
     {
         try
         {
+            var role = new UserRoleRepository();
+            await role.DeleteAsync(id);
             await _connection.OpenAsync();
             string query = "DELETE from users WHERE id = @Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
@@ -79,8 +82,8 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.OpenAsync();
             
-            string query = "SELECT first_name, last_name, email FROM users ORDER BY id DESC " +
-                $"offset{@params.SkipCount()} limit {@params.PageSize}";
+            string query = "SELECT * FROM users ORDER BY id DESC " +
+                $"offset {@params.SkipCount()} limit {@params.PageSize}";
             
             var result = (await _connection.QueryAsync<UserViewModel>(query)).ToList();
 
@@ -101,8 +104,8 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT *FROM users WHERE email = @Email;";
-            var data = await _connection.QuerySingleAsync<User>(query, new { Email = email });
+            string query = "SELECT * FROM users WHERE email = @Email;";
+            var data = await _connection.QuerySingleOrDefaultAsync<User>(query, new { Email = email });
             return data;
         }
         catch
@@ -120,7 +123,7 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT first_name, last_name, email FROM users WHERE id = @Id";
+            string query = "SELECT * FROM users WHERE id = @Id";
             var result = await _connection.QuerySingleAsync<UserViewModel>(query, new { Id = id });
 
             return result;
@@ -165,6 +168,27 @@ public class UserRepository : BaseRepository, IUserRepository
             return result;
         }
         catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<User?> GetLastIdAsync()
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "select * from users order by id desc limit 1";
+            var result = await _connection.QuerySingleAsync<User>(query);
+
+            return result;
+
+        }
+        catch 
         {
             return null;
         }

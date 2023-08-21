@@ -108,7 +108,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
             string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name, instruments.image_path," +
                 "instruments.price_per_day, instruments.district, instruments.region, instruments.address," +
                     "instruments.phone_number, instruments.description, instruments.status FROM instruments JOIN users ON " +
-                        "instruments.user_id = users.id where id = @Id;";
+                        $"instruments.user_id = users.id where instruments.id = @Id;";
             
             var result = await _connection.QuerySingleAsync<InstrumentViewModel>(query, new { Id = id });
 

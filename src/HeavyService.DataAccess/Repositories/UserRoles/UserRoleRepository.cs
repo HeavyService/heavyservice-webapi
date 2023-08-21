@@ -32,7 +32,7 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"DELETE FROM user_roles WHERE id=@Id";
+            string query = $"DELETE FROM user_roles WHERE user_id=@Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
             
             return result;
@@ -126,6 +126,26 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         catch 
         {
             return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<UserRoleViewModel?> GetByUserIdAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM user_role_viewmodel WHERE id = @Id";
+            var result = await _connection.QuerySingleAsync<UserRoleViewModel>(query, new { Id = id });
+
+            return result;
+        }
+        catch
+        {
+            return null;
         }
         finally
         {
