@@ -41,7 +41,7 @@ public class TokenService : ITokenService
             expires: TimeHelper.GetDateTime().AddHours(expiresHours),
             signingCredentials: keyCredentials
         );
-
+        
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

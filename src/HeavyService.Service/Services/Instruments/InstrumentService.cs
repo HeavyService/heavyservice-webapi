@@ -7,6 +7,7 @@ using HeavyService.Persistance.Dtos.Instruments;
 using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.Instruments;
+using HeavyService.Service.Interfaces.Users;
 
 namespace HeavyService.Service.Services.Instruments;
 
@@ -15,13 +16,14 @@ public class InstrumentService : IInstrumentService
     private readonly IInstrumentRepository _repository;
     private readonly IFileService _fileServise;
     private readonly IPaginator _paginator;
-
+    private readonly IIdentityService _service;
     public InstrumentService(IInstrumentRepository instrumentrepository,
-        IFileService fIleService, IPaginator paginator)
+        IFileService fIleService, IPaginator paginator, IIdentityService identityservice)
     {
         this._repository = instrumentrepository;
         this._fileServise = fIleService;
         this._paginator = paginator;
+        this._service = identityservice;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
 
@@ -37,9 +39,9 @@ public class InstrumentService : IInstrumentService
             Region = dto.Region,
             District = dto.District,
             Address = dto.Address,
-            Status = dto.Status,
+            Status = dto.Status, 
+            UserId = _service.UserId,
             PhoneNumber = dto.PhoneNumber,
-            UserId = dto.UserId,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime(),
         };
@@ -71,6 +73,7 @@ public class InstrumentService : IInstrumentService
         if (instrument is null) throw new InstrumentNotFoundExeption();
         instrument.Description = dto.Description;
         instrument.Region = dto.Region;
+        instrument.UserId = _service.UserId;
         instrument.Status = dto.Status;
         instrument.PhoneNumber = dto.PhoneNumber;
         instrument.Address = dto.Address;

@@ -7,9 +7,9 @@ namespace HeavyService.Persistance.Validations.TranportComments
     {
         public TransportCommentValidator()
         {
-            RuleFor(dto => dto.UserId).NotEmpty().NotNull().WithMessage("User id field is required!");
+            //RuleFor(dto => dto.UserId).NotEmpty().NotNull().WithMessage("User id field is required!");
 
-            RuleFor(dto => dto.TransportId).NotEmpty().NotNull().WithMessage("Transport id field is required!");
+            //RuleFor(dto => dto.TransportId).NotEmpty().NotNull().WithMessage("Transport id field is required!");
 
             RuleFor(dto => dto.ReplyId).NotEmpty().NotNull().WithMessage("Reply id field is required!");
 

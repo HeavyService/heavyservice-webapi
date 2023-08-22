@@ -10,6 +10,7 @@ using HeavyService.Persistance.Dtos.Transports;
 using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.Transports;
+using HeavyService.Service.Interfaces.Users;
 
 namespace HeavyService.Service.Services.Transports;
 
@@ -18,13 +19,15 @@ public class TransportService : ITransportService
     private readonly ITransportRepository _repository;
     private readonly IFileService _fileServise;
     private readonly IPaginator _paginator;
+    private readonly IIdentityService _service;
 
     public TransportService(ITransportRepository repository,
-        IFileService fileServise, IPaginator paginator)
+        IFileService fileServise, IPaginator paginator,IIdentityService service)
     {
         this._repository = repository;
         this._fileServise = fileServise;
         this._paginator = paginator;
+        this._service = service;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
     public async Task<bool> CreateAsync(TransportCreateDto dto)
@@ -41,7 +44,7 @@ public class TransportService : ITransportService
             Region = dto.Region,
             Status = dto.Status,
             PhoneNumber = dto.PhoneNumber,
-            UserId = 5,
+            UserId = _service.UserId,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime(),
         };
@@ -82,6 +85,7 @@ public class TransportService : ITransportService
         if (transport is null) throw new InstrumentNotFoundExeption();
         transport.Description = dto.Description;
         transport.Region = dto.Region;
+        transport.UserId = _service.UserId;
         transport.Status = dto.Status;
         transport.PhoneNumber = dto.PhoneNumber;
         transport.Address = dto.Address;

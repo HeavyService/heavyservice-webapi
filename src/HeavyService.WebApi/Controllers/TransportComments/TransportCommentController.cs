@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HeavyService.WebApi.Controllers.TransportComments
 {
-    [Route("api/transports/comment/{transportId}")]
+    [Route("api/transports/comment")]
     [ApiController]
     public class TransportCommentController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace HeavyService.WebApi.Controllers.TransportComments
         public async Task<IActionResult> CountAsync()
             => Ok(await _service.CountAsync());
 
-        [HttpGet("{commentId}")]
+        [HttpGet("commentId")]
         [AllowAnonymous]
         public async Task<IActionResult> GetByIdAsync(long commentId)
             => Ok(await _service.GetByIdAsync(commentId));
@@ -45,7 +45,8 @@ namespace HeavyService.WebApi.Controllers.TransportComments
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(long commentId)
             => Ok(await _service.DeleteAsync(commentId));
     }

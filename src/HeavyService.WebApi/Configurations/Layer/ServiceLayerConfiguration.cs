@@ -1,14 +1,18 @@
 ﻿using HeavyService.Service.Interfaces.Auth;
 using HeavyService.Service.Interfaces.Commons;
+using HeavyService.Service.Interfaces.InstrumentComments;
 using HeavyService.Service.Interfaces.Instruments;
 using HeavyService.Service.Interfaces.Notifications;
+using HeavyService.Service.Interfaces.TransportComments;
 using HeavyService.Service.Interfaces.Transports;
 using HeavyService.Service.Interfaces.Users;
 using HeavyService.Service.Services.Auth;
 using HeavyService.Service.Services.Common;
 using HeavyService.Service.Services.Commons;
+using HeavyService.Service.Services.InstrumentComments;
 using HeavyService.Service.Services.Instruments;
 using HeavyService.Service.Services.Notifications;
+using HeavyService.Service.Services.TransportComments;
 using HeavyService.Service.Services.Transports;
 using HeavyService.Service.Services.Users;
 
@@ -24,8 +28,11 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<IEmailSMSSender, EmailSMSSender>();
         builder.Services.AddScoped<IInstrumentService, InstrumentService>();
         builder.Services.AddScoped<ITransportService, TransportService>();
+        builder.Services.AddScoped<IInstrumentCommentService, InstrumentCommentService>();
+        builder.Services.AddScoped<ITransportCommentService, TransportCommentService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IPaginator, Paginator>();
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
     }
 }

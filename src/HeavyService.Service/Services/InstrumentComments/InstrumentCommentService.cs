@@ -1,71 +1,71 @@
-﻿using HeavyService.Application.Utils;
-using HeavyService.DataAccess.Interfaces.Instruments;
+﻿using HeavyService.Application.Exeptions.Comments;
+using HeavyService.Application.Exeptions.Instruments;
+using HeavyService.Application.Utils;
+using HeavyService.DataAccess.Interfaces.InstrumentComments;
 using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.InstrumentsComments;
 using HeavyService.Persistance.Dtos.InstrumentComments;
+using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.InstrumentComments;
+using HeavyService.Service.Interfaces.Users;
 
 namespace HeavyService.Service.Services.InstrumentComments;
 
 public class InstrumentCommentService : IInstrumentCommentService
 {
-    private readonly IInstrumentRepository _repository;
-    private readonly IPaginator _paginator;
+    private readonly IInstrumentComment _repository;
+    private readonly IIdentityService _service;
 
-    public InstrumentCommentService(IInstrumentRepository instrumentRepository,
-        IPaginator paginator)
+    public InstrumentCommentService(IInstrumentComment repository,
+        IPaginator paginator,
+        IIdentityService identityservice)
     {
-        this._repository = instrumentRepository;
-        this._paginator = paginator;
+        this._repository = repository;
+        this._service = identityservice;
     }
-    public Task<long> CountAsync()
+    public async Task<long> CountAsync() => await _repository.CountAsync();
+    public async Task<bool> CreateAsync(long instrumentId, InstrumentCommentCreateDto dto)
     {
-        throw new NotImplementedException();
+        InstrumentComment comment = new InstrumentComment()
+        {
+            UserId = _service.UserId,
+            ReplyId = dto.ReplyId,
+            InstrumentId = instrumentId,
+            Comment = dto.Comment,
+            CreatedAt = TimeHelper.GetDateTime(),
+            UpdatedAt = TimeHelper.GetDateTime()
+        };
+        var result = await _repository.CreateAsync(comment);
+        return result > 0;
     }
-
-    public Task<bool> CreateAsync(InstrumentCommentCreateDto dto)
+    public async Task<bool> DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var instrument = await _repository.GetByIdAsync(id);
+        if (instrument is null) throw new InstrumentNotFoundExeption();
+        var dbResult = await _repository.DeleteAsync(id);
+        return dbResult > 0;
     }
-
-    public Task<bool> CreateAsync(long instrumentId, InstrumentCommentCreateDto dto)
+    public async Task<IList<InstrumentCommentViewModel>> GetAllAsync(Paginationparams @params)
     {
-        throw new NotImplementedException();
+        var result = await _repository.GetAllAsync(@params);
+        return result;
     }
-
-    public Task<bool> DeleteAsync(long id)
+    public async Task<InstrumentCommentViewModel> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var comment = await _repository.GetByIdAsync(id);
+        if (comment is null) throw new CommentNotFoundExeption();
+        return (InstrumentCommentViewModel)comment;
     }
-
-    public Task<InstrumentComment> GetAllAsync(long instrumentId)
+    public async Task<bool> UpdateAsync(long instrumentcommentId, InstrumentCommentCreateDto dto)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<IList<InstrumentComment>> GetAllAsync(Paginationparams @params)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IList<InstrumentComment>> GetByIdAsync(long id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> UpdateAsync(long instrumentId, InstrumentCommentCreateDto dto)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<IList<InstrumentCommentViewModel>> IInstrumentCommentService.GetAllAsync(Paginationparams @params)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<IList<InstrumentCommentViewModel>> IInstrumentCommentService.GetByIdAsync(long id)
-    {
-        throw new NotImplementedException();
+        var instrumentcomment = await _repository.GetIdAsync(instrumentcommentId);
+        if (instrumentcomment is null) throw new InstrumentNotFoundExeption();
+        instrumentcomment.UserId = _service.UserId;
+        instrumentcomment.ReplyId = dto.ReplyId;
+        instrumentcomment.Comment = dto.Comment;
+        instrumentcomment.UpdatedAt = TimeHelper.GetDateTime();
+        var dbResult = await _repository.UpdateAsync(instrumentcommentId, instrumentcomment);
+        return dbResult > 0;
     }
 }

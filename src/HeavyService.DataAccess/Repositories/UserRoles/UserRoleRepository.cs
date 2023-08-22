@@ -152,4 +152,24 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
             await _connection.CloseAsync();
         }
     }
+
+    public async Task<UserRole> GetIdAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM user_roles where id = @Id";
+            var result = await _connection.QuerySingleAsync<UserRole>(query, new { Id = id });
+
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
 }
