@@ -178,7 +178,28 @@ public class UserRepository : BaseRepository, IUserRepository
     {
         throw new NotImplementedException();
     }
+    public async Task<IList<UserViewModel>> SearchAsync(string search, Paginationparams @params)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            
+            string query = $"SELECT * FROM users where first_name ilike '%{search}%' or last_name ilike '%{search}%' " +
+                $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            
+            var result = (await _connection.QueryAsync<UserViewModel>(query)).ToList();
 
+            return result;
+        }
+        catch 
+        {
+            return new List<UserViewModel>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
     public async Task<int> UpdateAsync(long id, User entity)
     {
         try

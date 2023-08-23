@@ -117,9 +117,23 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
 
     public Task<Domain.Entities.InstrumentsComments.InstrumentComment> GetIdAsync(long id)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM instrument_comments where id = @Id";
+            var result = await _connection.QuerySingleAsync<Domain.Entities.InstrumentsComments.InstrumentComment>(query, new { Id = id });
 
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
     public async Task<int> UpdateAsync(long id, Domain.Entities.InstrumentsComments.InstrumentComment entity)
     {
         throw new NotImplementedException();
