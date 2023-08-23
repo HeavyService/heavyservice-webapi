@@ -10,6 +10,7 @@ using HeavyService.Persistance.Dtos.Transports;
 using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.Transports;
+using HeavyService.Service.Interfaces.Users;
 
 namespace HeavyService.Service.Services.Transports;
 
@@ -18,13 +19,16 @@ public class TransportService : ITransportService
     private readonly ITransportRepository _repository;
     private readonly IFileService _fileServise;
     private readonly IPaginator _paginator;
+    private readonly IIdentityService _service;
 
     public TransportService(ITransportRepository repository,
-        IFileService fileServise, IPaginator paginator)
+        IFileService fileServise, IPaginator paginator,
+        IIdentityService identity)
     {
         this._repository = repository;
         this._fileServise = fileServise;
         this._paginator = paginator;
+        this._service = identity;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
     public async Task<bool> CreateAsync(TransportCreateDto dto)
@@ -40,8 +44,8 @@ public class TransportService : ITransportService
             Address = dto.Address,
             Region = dto.Region,
             Status = dto.Status,
+            UserId = _service.UserId,
             PhoneNumber = dto.PhoneNumber,
-            UserId = 5,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime(),
         };
@@ -76,11 +80,22 @@ public class TransportService : ITransportService
         
         return transport;
     }
+
+    public async Task<IList<TransportViewModel>> SearchAsync(string search, Paginationparams @params)
+    {
+        var transport = await _repository.SearchAsync(search, @params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
+
+        return transport;
+    }
+
     public async Task<bool> UpdateAsync(long transportId, TransportUpdateDto dto)
     {
         var transport = await _repository.GetIdAsync(transportId);
         if (transport is null) throw new InstrumentNotFoundExeption();
         transport.Description = dto.Description;
+        transport.PricePerHours = dto.PricePerHours;
         transport.Region = dto.Region;
         transport.Status = dto.Status;
         transport.PhoneNumber = dto.PhoneNumber;

@@ -4,95 +4,95 @@ BEGIN;
 CREATE TABLE IF NOT EXISTS public.users
 (
     id bigint generated always as identity,
-    first_name text NOT NULL,
-    last_name text NOT NULL,
-    email text NOT NULL,
-    email_confirmed text NOT NULL,
-    password_hash text NOT NULL,
-    salt text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    first_name text,
+    last_name text,
+    email text,
+    email_confirmed bool,
+    password_hash text,
+    salt text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.roles
 (
     id bigint generated always as identity ,
-    name text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    name text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.user_roles
 (
     id bigint generated always as identity,
-    role_id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    role_id bigint,
+    user_id bigint,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.instruments
 (
     id bigint generated always as identity ,
-    name text NOT NULL,
-    description text NOT NULL,
-    image_path text NOT NULL,
-    price_per_day double precision NOT NULL,
-    region text NOT NULL,
-    district text NOT NULL,
-    address text NOT NULL,
-    status text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    user_id bigint NOT NULL,
-    phone_number character varying(13) NOT NULL,
+    name text,
+    description text,
+    image_path text,
+    price_per_day double precision,
+    region text,
+    district text,
+    address text,
+    status text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    user_id bigint,
+    phone_number character varying(13),
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.transports
 (
     id bigint generated always as identity,
-    user_id bigint NOT NULL,
-    name text NOT NULL,
-    description text NOT NULL,
-    image_path text NOT NULL,
-    price_per_hours double precision NOT NULL,
-    region text NOT NULL,
-    district text NOT NULL,
-    address text NOT NULL,
-    status text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    phone_number character varying(13) NOT NULL,
+    user_id bigint,
+    name text,
+    description text,
+    image_path text,
+    price_per_hours double precision,
+    region text,
+    district text,
+    address text,
+    status text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    phone_number character varying(13),
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.transport_comments
 (
     id bigint generated always as identity,
-    user_id bigint NOT NULL,
-    transport_id bigint NOT NULL,
-    comment text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    is_edited boolean NOT NULL,
-    reply_id bigint NOT NULL,
+    user_id bigint,
+    transport_id bigint,
+    comment text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    is_edited boolean,
+    reply_id bigint,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.instrument_comments
 (
     id bigint generated always as identity,
-    user_id bigint NOT NULL,
-    instrument_id bigint NOT NULL,
-    comment text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    is_edited boolean NOT NULL,
-    reply_id bigint NOT NULL,
+    user_id bigint,
+    instrument_id bigint,
+    comment text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    is_edited boolean,
+    reply_id bigint,
     PRIMARY KEY (id)
 );
 

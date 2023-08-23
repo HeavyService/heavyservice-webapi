@@ -17,7 +17,6 @@ public class UserService : IUserservice
     private readonly IPaginator _paginator;
 
     public UserService(IUserRepository userrepository, IPaginator paginator)
-
     {
         this._repository = userrepository;
         this._paginator = paginator;
@@ -60,6 +59,15 @@ public class UserService : IUserservice
         else return user;
     }
 
+    public async Task<IList<UserViewModel>> SearchAsync(string search, Paginationparams @params)
+    {
+        var result = await _repository.SearchAsync(search, @params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
+
+        return result;
+    }
+
     public async Task<bool> UpdateAsync(long userId, UserUpdateDto dto)
     {
         var user = await _repository.GetIdAsync(userId);
@@ -67,10 +75,6 @@ public class UserService : IUserservice
 
         user.FirstName = dto.FirstName;
         user.LastName = dto.LastName;
-
-        var email = await _repository.GetByEmailAsync(dto.Email);
-        if (email is not null) throw new UserAllReadyExeptions();
-
         user.Email = dto.Email;
 
         var password = PasswordHasher.Hash(dto.Password);

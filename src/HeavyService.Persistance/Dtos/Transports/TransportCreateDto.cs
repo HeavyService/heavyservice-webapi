@@ -5,7 +5,6 @@ namespace HeavyService.Persistance.Dtos.Transports;
 
 public class TransportCreateDto
 {
-    public long UserId { get; set; }
     public string Name { get; set; } = string.Empty;
     public IFormFile ImagePath { get; set; } = default!;
     public int PricePerHours { get; set; }

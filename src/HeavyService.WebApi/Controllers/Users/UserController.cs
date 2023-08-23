@@ -48,5 +48,10 @@ namespace HeavyService.WebApi.Controllers.Users
             if (result.IsValid) return Ok(await _service.UpdateAsync(userId, dto));
             else return BadRequest(result.Errors);
         }
+
+        [HttpGet("search")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SearchAsync(string search, [FromQuery] int page = 1)
+            => Ok(await _service.SearchAsync(search, new Paginationparams(page, MaxPageSize)));
     }
 }

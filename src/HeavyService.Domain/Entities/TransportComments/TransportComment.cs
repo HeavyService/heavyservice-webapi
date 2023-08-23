@@ -1,6 +1,6 @@
 ﻿namespace HeavyService.Domain.Entities.TransportComments;
 
-public class TransportComment
+public class TransportComment : AudiTable
 {
     public long UserId { get; set; }
     public long TransportId { get; set; }

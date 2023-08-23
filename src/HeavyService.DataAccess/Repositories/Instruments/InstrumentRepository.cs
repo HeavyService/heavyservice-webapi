@@ -80,11 +80,8 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         {
             await _connection.OpenAsync();
 
-            string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name," +
-                "instruments.image_path, instruments.price_per_day, instruments.district, instruments.region," +
-                    "instruments.address, instruments.phone_number, instruments.description, instruments.status FROM " +
-                        "instruments JOIN users ON instruments.user_id = users.id ORDER BY instruments.id DESC " +
-                            $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            string query = "SELECT * FROM instruments JOIN users ON instruments.user_id = users.id ORDER BY " +
+                $"instruments.id DESC offset {@params.SkipCount()} limit {@params.PageSize}";
 
             var result = (await _connection.QueryAsync<InstrumentViewModel>(query)).ToList();
 
@@ -105,10 +102,9 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name, instruments.image_path," +
-                "instruments.price_per_day, instruments.district, instruments.region, instruments.address," +
-                    "instruments.phone_number, instruments.description, instruments.status FROM instruments JOIN users ON " +
-                        $"instruments.user_id = users.id where instruments.id = @Id;";
+            
+            string query = "SELECT * FROM instruments JOIN users ON instruments.user_id = users.id " +
+                "where instruments.id = @Id;";
             
             var result = await _connection.QuerySingleAsync<InstrumentViewModel>(query, new { Id = id });
 
@@ -144,9 +140,28 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
         }
     }
 
-    public Task<(int ItemsCount, IList<InstrumentViewModel>)> SearchAsync(string search, Paginationparams @params)
+    public async Task<IList<InstrumentViewModel>> SearchAsync(string search, Paginationparams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+
+            string query = $"SELECT * FROM instruments join users on instruments.user_id = users.id where instruments.name " +
+                $"ilike '%{search}%' or instruments.region ilike '%{search}%' offset {@params.SkipCount()} " +
+                    $"limit {@params.PageSize}";
+
+            var result = (await _connection.QueryAsync<InstrumentViewModel>(query)).ToList();
+
+            return result;
+        }
+        catch
+        {
+            return new List<InstrumentViewModel>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<int> UpdateAsync(long id, Instrument entity)
@@ -158,7 +173,7 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
             string query = "UPDATE public.instruments SET name=@Name, description=@Description, image_path=@ImagePath, " +
                 "price_per_day=@PricePerDay, region=@Region, district=@District, address=@Address, " +
                     "status=@Status, created_at=@CreatedAt, updated_at=@UpdatedAt, user_id=@UserId, " +
-                        "phone_number=@PhoneNumber WHERE id = {id};";
+                        $"phone_number=@PhoneNumber WHERE id = {id};";
 
             var result = await _connection.ExecuteAsync(query, entity);
 

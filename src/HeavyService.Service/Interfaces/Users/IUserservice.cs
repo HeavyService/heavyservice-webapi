@@ -11,5 +11,6 @@ public interface IUserservice
     public Task<bool> DeleteAsync(long userId);
     public Task<long> CountAsync();
     public Task<UserViewModel> GetByIdAsync(long userId);
+    public Task<IList<UserViewModel>> SearchAsync(string search, Paginationparams @params);
     public Task<bool> UpdateAsync(long userId, UserUpdateDto dto);
 }
