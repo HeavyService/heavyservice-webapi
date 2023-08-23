@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HeavyService.WebApi.Controllers.InstrumentComments
 {
-    [Route("api/instruments/comment/{instrumentId}")]
+    [Route("api/instruments/comment")]
     [ApiController]
     public class InstrumentCommentController : ControllerBase
     {
@@ -45,7 +45,7 @@ namespace HeavyService.WebApi.Controllers.InstrumentComments
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(long commentId)
             => Ok(await _service.DeleteAsync(commentId));
     }

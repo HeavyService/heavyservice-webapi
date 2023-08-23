@@ -78,11 +78,8 @@ public class TransportRepository : BaseRepository, ITransportRepository
         {
             await _connection.OpenAsync();
             
-            string query = "SELECT transports.id, users.first_name, users.last_name, transports.name," +
-                "transports.image_path, transports.price_per_hours, transports.district, transports.region," +
-                    "transports.address, transports.phone_number, transports.description, transports.status FROM " +
-                        "transports JOIN users ON transports.user_id = users.id ORDER BY transports.id DESC " +
-                            $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            string query = "SELECT * FROM transports JOIN users ON transports.user_id = users.id ORDER BY " +
+                $"transports.id DESC offset {@params.SkipCount()} limit {@params.PageSize}";
             
             var result = (await _connection.QueryAsync<TransportViewModel>(query)).ToList();
             
@@ -103,10 +100,9 @@ public class TransportRepository : BaseRepository, ITransportRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT transports.id, users.first_name, users.last_name, transports.name," +
-                "transports.image_path, transports.price_per_hours, transports.district, transports.region," +
-                    "transports.address, transports.phone_number, transports.description, transports.status FROM " +
-                        "transports JOIN users ON transports.user_id = users.id where id = @Id;";
+            
+            string query = "SELECT * FROM transports JOIN users ON transports.user_id = users.id " +
+                "where transports.id = @Id;";
             
             var result = await _connection.QuerySingleAsync<TransportViewModel>(query, new { Id = id });
             
@@ -142,9 +138,28 @@ public class TransportRepository : BaseRepository, ITransportRepository
         }
     }
 
-    public Task<(int ItemsCount, IList<TransportViewModel>)> SearchAsync(string search, Paginationparams @params)
+    public async Task<IList<TransportViewModel>> SearchAsync(string search, Paginationparams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+
+            string query = $"SELECT * FROM transports join users on transports.user_id = users.id where transports.name " +
+                $"ilike '%{search}%' or transports.region ilike '%{search}%' offset {@params.SkipCount()} " +
+                    $"limit {@params.PageSize}";
+
+            var result = (await _connection.QueryAsync<TransportViewModel>(query)).ToList();
+
+            return result;
+        }
+        catch
+        {
+            return new List<TransportViewModel>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<int> UpdateAsync(long id, Transport entity)
@@ -156,7 +171,7 @@ public class TransportRepository : BaseRepository, ITransportRepository
             string query = "UPDATE public.transports SET user_id=@UserId, name= @Name, description=@Description, " +
                 "image_path= @ImagePath, price_per_hours=@PricePerHours, region=@Region, " +
                     "district=@District, address=@Address, status= @Status, created_at=@CreatedAt, " +
-                        "updated_at=@UpdatedAt, phone_number=@PhoneNumber WHERE id = {id};";
+                        $"updated_at=@UpdatedAt, phone_number=@PhoneNumber WHERE id = {id};";
             
             var result = await _connection.ExecuteAsync(query, entity);
             

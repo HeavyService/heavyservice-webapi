@@ -17,12 +17,17 @@ public class InstrumentService : IInstrumentService
     private readonly IFileService _fileServise;
     private readonly IPaginator _paginator;
     private readonly IIdentityService _service;
+
+    public InstrumentService(IInstrumentRepository instrumentrepository,
+        IFileService fIleService, IPaginator paginator,
+        IIdentityService identity)
     public InstrumentService(IInstrumentRepository instrumentrepository,
         IFileService fIleService, IPaginator paginator, IIdentityService identityservice)
     {
         this._repository = instrumentrepository;
         this._fileServise = fIleService;
         this._paginator = paginator;
+        this._service = identity;
         this._service = identityservice;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -39,6 +44,7 @@ public class InstrumentService : IInstrumentService
             Region = dto.Region,
             District = dto.District,
             Address = dto.Address,
+            Status = dto.Status,
             Status = dto.Status, 
             UserId = _service.UserId,
             PhoneNumber = dto.PhoneNumber,
@@ -72,6 +78,7 @@ public class InstrumentService : IInstrumentService
         var instrument = await _repository.GetIdAsync(instrumentId);
         if (instrument is null) throw new InstrumentNotFoundExeption();
         instrument.Description = dto.Description;
+        instrument.PricePerDay = dto.PricePerDay;
         instrument.Region = dto.Region;
         instrument.UserId = _service.UserId;
         instrument.Status = dto.Status;
@@ -96,5 +103,14 @@ public class InstrumentService : IInstrumentService
         _paginator.Paginate(count, @params);
 
         return instrument;
+    }
+
+    public async Task<IList<InstrumentViewModel>> SearchAsync(string search, Paginationparams @params)
+    {
+        var result = await _repository.SearchAsync(search, @params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
+
+        return result;
     }
 }

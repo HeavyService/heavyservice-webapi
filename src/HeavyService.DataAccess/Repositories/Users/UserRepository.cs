@@ -58,7 +58,9 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             var role = new UserRoleRepository();
             await role.DeleteAsync(id);
+            
             await _connection.OpenAsync();
+            
             string query = "DELETE from users WHERE id = @Id";
             var result = await _connection.ExecuteAsync(query, new { Id = id });
 
@@ -102,6 +104,7 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.OpenAsync();
             string query = "SELECT * FROM users WHERE email = @Email;";
             var data = await _connection.QuerySingleOrDefaultAsync<User>(query, new { Email = email });
+            
             return data;
         }
         catch
@@ -156,7 +159,7 @@ public class UserRepository : BaseRepository, IUserRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT FROM users WHERE id = @Id";
+            string query = "SELECT * FROM users WHERE id = @Id";
             var result = await _connection.QuerySingleAsync<User>(query, new { Id = id });
 
             return result;
@@ -190,9 +193,29 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.CloseAsync();
         }
     }
+
+    public async Task<IList<UserViewModel>> SearchAsync(string search, Paginationparams @params)
     public Task<(int ItemsCount, IList<UserViewModel>)> SearchAsync(string search, Paginationparams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            
+            string query = $"SELECT * FROM users where first_name ilike '%{search}%' or last_name ilike '%{search}%' " +
+                $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            
+            var result = (await _connection.QueryAsync<UserViewModel>(query)).ToList();
+
+            return result;
+        }
+        catch 
+        {
+            return new List<UserViewModel>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
     public async Task<int> UpdateAsync(long id, User entity)
     {

@@ -60,5 +60,10 @@ namespace HeavyService.WebApi.Controllers.Instruments
         [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(long instrumentid)
             => Ok(await _service.DeleteAsync(instrumentid));
+
+        [HttpGet("search")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SearchAsync(string search, [FromQuery] int page = 1)
+            => Ok(await _service.SearchAsync(search, new Paginationparams(page, MaxPageSize)));
     }
 }

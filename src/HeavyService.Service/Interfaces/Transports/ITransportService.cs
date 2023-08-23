@@ -11,5 +11,6 @@ public interface ITransportService
     public Task<TransportViewModel> GetByIdAsync(long transportId);
     public Task<long> CountAsync();
     public Task<IList<TransportViewModel>> GetAllAsync(Paginationparams @params);
+    public Task<IList<TransportViewModel>> SearchAsync(string search, Paginationparams @params);
     public Task<bool> UpdateAsync(long transportId, TransportUpdateDto dto);
 }

@@ -58,5 +58,10 @@ namespace HeavyService.WebApi.Controllers.Transports
         [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(long transportId)
             => Ok(await _service.DeleteAsync(transportId));
+
+        [HttpGet("search")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SearchAsync(string search, int page = 1)
+            => Ok(await _service.SearchAsync(search, new Paginationparams(page, MaxPageSize)));
     }
 }

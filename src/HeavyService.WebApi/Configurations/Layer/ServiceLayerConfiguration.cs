@@ -27,6 +27,7 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<IUserservice, UserService>();
         builder.Services.AddScoped<IEmailSMSSender, EmailSMSSender>();
         builder.Services.AddScoped<IInstrumentService, InstrumentService>();
+        builder.Services.AddScoped<IInstrumentCommentService, InstrumentCommentService>();
         builder.Services.AddScoped<ITransportService, TransportService>();
         builder.Services.AddScoped<IInstrumentCommentService, InstrumentCommentService>();
         builder.Services.AddScoped<ITransportCommentService, TransportCommentService>();

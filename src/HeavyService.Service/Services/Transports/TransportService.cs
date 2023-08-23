@@ -22,11 +22,14 @@ public class TransportService : ITransportService
     private readonly IIdentityService _service;
 
     public TransportService(ITransportRepository repository,
+        IFileService fileServise, IPaginator paginator,
+        IIdentityService identity)
         IFileService fileServise, IPaginator paginator,IIdentityService service)
     {
         this._repository = repository;
         this._fileServise = fileServise;
         this._paginator = paginator;
+        this._service = identity;
         this._service = service;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -43,6 +46,7 @@ public class TransportService : ITransportService
             Address = dto.Address,
             Region = dto.Region,
             Status = dto.Status,
+            UserId = _service.UserId,
             PhoneNumber = dto.PhoneNumber,
             UserId = _service.UserId,
             CreatedAt = TimeHelper.GetDateTime(),
@@ -79,11 +83,22 @@ public class TransportService : ITransportService
         
         return transport;
     }
+
+    public async Task<IList<TransportViewModel>> SearchAsync(string search, Paginationparams @params)
+    {
+        var transport = await _repository.SearchAsync(search, @params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
+
+        return transport;
+    }
+
     public async Task<bool> UpdateAsync(long transportId, TransportUpdateDto dto)
     {
         var transport = await _repository.GetIdAsync(transportId);
         if (transport is null) throw new InstrumentNotFoundExeption();
         transport.Description = dto.Description;
+        transport.PricePerHours = dto.PricePerHours;
         transport.Region = dto.Region;
         transport.UserId = _service.UserId;
         transport.Status = dto.Status;
