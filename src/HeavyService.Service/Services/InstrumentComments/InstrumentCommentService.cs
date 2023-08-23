@@ -22,6 +22,9 @@ public class InstrumentCommentService : IInstrumentCommentService
     public InstrumentCommentService(IInstrumentComment repository,
         IPaginator paginator,
         IInstrumentRepository repostory,
+
+    public InstrumentCommentService(IInstrumentComment repository,
+        IPaginator paginator,
         IIdentityService identityservice)
     {
         this._repository = repository;
@@ -49,6 +52,17 @@ public class InstrumentCommentService : IInstrumentCommentService
             return result > 0;
         }
         else throw new InstrumentNotFoundExeption();
+        InstrumentComment comment = new InstrumentComment()
+        {
+            UserId = _service.UserId,
+            ReplyId = dto.ReplyId,
+            InstrumentId = instrumentId,
+            Comment = dto.Comment,
+            CreatedAt = TimeHelper.GetDateTime(),
+            UpdatedAt = TimeHelper.GetDateTime()
+        };
+        var result = await _repository.CreateAsync(comment);
+        return result > 0;
     }
     public async Task<bool> DeleteAsync(long id)
     {
@@ -70,6 +84,14 @@ public class InstrumentCommentService : IInstrumentCommentService
         if (comment is null) throw new CommentNotFoundExeption();
 
         return comment;
+    }
+        return result;
+    }
+    public async Task<InstrumentCommentViewModel> GetByIdAsync(long id)
+    {
+        var comment = await _repository.GetByIdAsync(id);
+        if (comment is null) throw new CommentNotFoundExeption();
+        return (InstrumentCommentViewModel)comment;
     }
     public async Task<bool> UpdateAsync(long instrumentcommentId, InstrumentCommentCreateDto dto)
     {

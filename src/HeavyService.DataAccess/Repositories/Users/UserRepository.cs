@@ -28,7 +28,6 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.CloseAsync();
         }
     }
-
     public async Task<int> CreateAsync(User entity)
     {
         try
@@ -53,7 +52,6 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.CloseAsync();
         }
     }
-
     public async Task<int> DeleteAsync(long id)
     {
         try
@@ -77,7 +75,6 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.CloseAsync();
         }
     }
-
     public async Task<IList<UserViewModel>> GetAllAsync(Paginationparams @params)
     {
         try
@@ -100,7 +97,6 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.CloseAsync();
         }
     }
-
     public async Task<User?> GetByEmailAsync(string email)
     {
         try
@@ -120,7 +116,6 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.CloseAsync();
         }
     }
-
     public async Task<UserViewModel?> GetByIdAsync(long id)
     {
         try
@@ -140,7 +135,6 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.CloseAsync();
         }
     }
-
     public async Task<User?> GetByPhoneAsync(string phone)
     {
         try
@@ -201,6 +195,7 @@ public class UserRepository : BaseRepository, IUserRepository
     }
 
     public async Task<IList<UserViewModel>> SearchAsync(string search, Paginationparams @params)
+    public Task<(int ItemsCount, IList<UserViewModel>)> SearchAsync(string search, Paginationparams @params)
     {
         try
         {
@@ -222,7 +217,6 @@ public class UserRepository : BaseRepository, IUserRepository
             await _connection.CloseAsync();
         }
     }
-
     public async Task<int> UpdateAsync(long id, User entity)
     {
         try

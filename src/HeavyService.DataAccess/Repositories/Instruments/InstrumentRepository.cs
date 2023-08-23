@@ -35,9 +35,9 @@ public class InstrumentRepository : BaseRepository, IInstrumentRepository
             await _connection.OpenAsync();
 
             string query = "INSERT INTO public.instruments(name, description, image_path, price_per_day, region, " +
-                "district, address, status, created_at, updated_at, user_id, phone_number) " +
+                "district, address, status, created_at, updated_at, phone_number) " +
                     "VALUES (@Name, @Description, @ImagePath, @PricePerDay, @Region, @District, @Address, @Status, " +
-                        "@CreatedAt, @UpdatedAt, @UserId, @PhoneNumber);";
+                        "@CreatedAt, @UpdatedAt,@PhoneNumber);";
 
             var result = await _connection.ExecuteAsync(query, entity);
 

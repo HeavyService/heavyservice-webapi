@@ -7,6 +7,8 @@ namespace HeavyService.DataAccess.Interfaces.InstrumentComments
     public interface IInstrumentComment : IRepository<InstrumentComment, InstrumentCommentViewModel>, 
         IGetAll<InstrumentCommentViewModel>
     {
+
         public Task<InstrumentComment> GetIdAsync(long id);
+        public Task<InstrumentComment?> GetIdAsync(long id);
     }
 }

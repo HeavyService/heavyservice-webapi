@@ -1,5 +1,6 @@
 ﻿using HeavyService.Application.Exeptions.Auth;
 using HeavyService.Application.Exeptions.Users;
+using HeavyService.Application.Utils;
 using HeavyService.DataAccess.Interfaces.Users;
 using HeavyService.DataAccess.Repositories.UserRoles;
 using HeavyService.Domain.Entities.Roles;
@@ -12,11 +13,13 @@ using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Commons.Securities;
 using HeavyService.Service.Interfaces.Auth;
 using HeavyService.Service.Interfaces.Notifications;
+using HeavyService.Service.Interfaces.Users;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace HeavyService.Service.Services.Auth;
 public class AuthService : IAuthService
 {
+    private readonly IIdentityService _service;
     private readonly IMemoryCache _memoryCache;
     private readonly IUserRepository _repository;
     private readonly IEmailSMSSender _emailSender;
@@ -27,12 +30,13 @@ public class AuthService : IAuthService
     private const string VERIFY_REGISTER_CACHE_KEY = "verify_register_";
     private const int VERIFICATION_MAXIMUM_ATTEMPTS = 3;
     public AuthService(IMemoryCache memoryCache, IUserRepository userrepos,
-        IEmailSMSSender emailSender, ITokenService tokenService)
+        IEmailSMSSender emailSender, ITokenService tokenService,IIdentityService service)
     {
         this._memoryCache = memoryCache;
         this._repository = userrepos;
         this._emailSender = emailSender;
         this._tokenService = tokenService;
+        this._service = service;
     }
     public async Task<(bool Result, string Token)> LoginAsync(LoginDto loginDto)
     {
@@ -60,6 +64,8 @@ public class AuthService : IAuthService
     }
     public async Task<(bool Result, int CachedVerificationMinutes)> SendCodeForRegisterAsync(string email)
     {
+        var users = await _repository.GetByEmailAsync(email);
+        if (users is not null) throw new UserAllReadyExeptions(email);
         if (_memoryCache.TryGetValue(REGISTER_CACHE_KEY + email, out RegisterDto registerDto))
         {
             VerificationDto verificationDto = new VerificationDto();
@@ -120,12 +126,11 @@ public class AuthService : IAuthService
     private async Task<bool> RegisterToDatabaseAsync(RegisterDto registerDto)
     {
         var user = new User();
-        var role = new Role();
         user.FirstName = registerDto.FirstName;
         user.LastName = registerDto.LastName;
         user.Email = registerDto.Email;
         user.EmailConfirmed = true;
-        user.Role = "User";
+        user.Role = "Admin";
         var hasherResult = PasswordHasher.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;
@@ -136,7 +141,7 @@ public class AuthService : IAuthService
         var UserRoleRepasitortuy = new UserRoleRepository();
         var Entity = new UserRole()
         {
-            UserId = id.Id,
+            UserId = _service.UserId,
             RoleId = 2,
             CreatedAt = user.CreatedAt,
             UpdatedAt = user.UpdatedAt
