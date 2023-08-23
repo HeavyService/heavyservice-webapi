@@ -8,4 +8,4 @@ public interface IInstrumentComment : IRepository<InstrumentComment, InstrumentC
     IGetAll<InstrumentCommentViewModel>
 {
     public Task<InstrumentComment> GetIdAsync(long id);
-}
+}       

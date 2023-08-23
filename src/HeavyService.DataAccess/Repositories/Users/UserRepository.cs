@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HeavyService.Application.Utils;
+using HeavyService.DataAccess.Common.Interfaces;
 using HeavyService.DataAccess.Interfaces.Users;
 using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.Users;
@@ -172,11 +173,6 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             await _connection.CloseAsync();
         }
-    }
-
-    public Task<(int ItemsCount, IList<UserViewModel>)> SearchAsync(string search, Paginationparams @params)
-    {
-        throw new NotImplementedException();
     }
     public async Task<IList<UserViewModel>> SearchAsync(string search, Paginationparams @params)
     {

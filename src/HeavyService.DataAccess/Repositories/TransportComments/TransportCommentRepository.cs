@@ -117,33 +117,47 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         }
     }
 
-    public Task<TransportComment> GetIdAsync(long id)
+    public async Task<TransportComment> GetIdAsync(long id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM transport_comments where id = @Id";
+            var result = await _connection.QuerySingleAsync<TransportComment>(query, new { Id = id });
+
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<int> UpdateAsync(long id, TransportComment entity)
     {
-        throw new NotImplementedException();
-        //try
-        //{
-        //    await _connection.OpenAsync();
+        try
+        {
+            await _connection.OpenAsync();
 
-        //    string query = "UPDATE public.transport_comments SET  user_id=@UserId, transport_id=@TransportId, " +
-        //        "comment=@Comment, created_at=@CreatedAt, updated_at=@UpdatedAt, is_edited=@IsEdited, reply_id=@ReplayId " +
-        //            $"WHERE id={id};";
+            string query = "UPDATE public.transport_comments SET  user_id=@UserId, transport_id=@TransportId, " +
+                "comment=@Comment, created_at=@CreatedAt, updated_at=@UpdatedAt, is_edited=@IsEdited, reply_id=@ReplayId " +
+                    $"WHERE id={id};";
 
-        //    var result = await _connection.ExecuteAsync(query, entity);
+            var result = await _connection.ExecuteAsync(query, entity);
 
-        //    return result;
-        //}
-        //catch 
-        //{
-        //    return 0;
-        //}
-        //finally
-        //{
-        //    await _connection.CloseAsync();
-        //}
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 }

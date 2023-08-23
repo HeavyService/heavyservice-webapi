@@ -115,7 +115,7 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         }
     }
 
-    public Task<Domain.Entities.InstrumentsComments.InstrumentComment> GetIdAsync(long id)
+    public async Task<Domain.Entities.InstrumentsComments.InstrumentComment> GetIdAsync(long id)
     {
         try
         {
@@ -136,27 +136,26 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
     }
     public async Task<int> UpdateAsync(long id, Domain.Entities.InstrumentsComments.InstrumentComment entity)
     {
-        throw new NotImplementedException();
-        //try
-        //{
-        //    await _connection.OpenAsync();
+        try
+        {
+            await _connection.OpenAsync();
 
-        //    string query = "UPDATE public.instrument_comments " +
-        //        "SET user_id = @UserId, instrument_id = @InstrumentId, comment = @Comment," +
-        //            "created_at = @CreatedAt, updated_at = @UpdatedAt, is_edited = @IsEdited, reply_id = @ReplyId" +
-        //                "WHERE id=@Id;";
+            string query = "UPDATE public.instrument_comments " +
+                "SET user_id = @UserId, instrument_id = @InstrumentId, comment = @Comment," +
+                    "created_at = @CreatedAt, updated_at = @UpdatedAt, is_edited = @IsEdited, reply_id = @ReplyId" +
+                        "WHERE id=@Id;";
 
-        //    var result = await _connection.ExecuteAsync(query, new { Id = id });
+            var result = await _connection.ExecuteAsync(query, new { Id = id });
 
-        //    return result;
-        //}
-        //catch
-        //{
-        //    return 0;
-        //}
-        //finally
-        //{
-        //    await _connection.CloseAsync();
-        //}
+            return result;
+        }
+        catch
+        {
+            return 0;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 }
