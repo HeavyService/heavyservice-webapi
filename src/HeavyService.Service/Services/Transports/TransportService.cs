@@ -24,11 +24,13 @@ public class TransportService : ITransportService
     public TransportService(ITransportRepository repository,
         IFileService fileServise, IPaginator paginator,
         IIdentityService identity)
+        IFileService fileServise, IPaginator paginator,IIdentityService service)
     {
         this._repository = repository;
         this._fileServise = fileServise;
         this._paginator = paginator;
         this._service = identity;
+        this._service = service;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
     public async Task<bool> CreateAsync(TransportCreateDto dto)
@@ -46,6 +48,7 @@ public class TransportService : ITransportService
             Status = dto.Status,
             UserId = _service.UserId,
             PhoneNumber = dto.PhoneNumber,
+            UserId = _service.UserId,
             CreatedAt = TimeHelper.GetDateTime(),
             UpdatedAt = TimeHelper.GetDateTime(),
         };
@@ -97,6 +100,7 @@ public class TransportService : ITransportService
         transport.Description = dto.Description;
         transport.PricePerHours = dto.PricePerHours;
         transport.Region = dto.Region;
+        transport.UserId = _service.UserId;
         transport.Status = dto.Status;
         transport.PhoneNumber = dto.PhoneNumber;
         transport.Address = dto.Address;

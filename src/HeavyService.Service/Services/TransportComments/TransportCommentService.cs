@@ -11,6 +11,7 @@ using HeavyService.Persistance.Helpers;
 using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.TransportComments;
 using HeavyService.Service.Interfaces.Users;
+using Microsoft.AspNetCore.Server.IIS.Core;
 
 namespace HeavyService.Service.Services.TransportComments;
 public class TransportCommentService : ITransportCommentService
@@ -26,6 +27,11 @@ public class TransportCommentService : ITransportCommentService
     {
         this._repository = repository;
         this._transrepository = transrepository;
+    private readonly IIdentityService _service;
+    public TransportCommentService(ITransportCommentRepository repository,
+        IIdentityService service)
+    {
+        this._repository = repository;
         this._service = service;
         this._paginator = paginator;
     }
@@ -33,6 +39,7 @@ public class TransportCommentService : ITransportCommentService
     public async Task<bool> CreateAsync(long transportId, TransportCommentDto dto)
     {
         var trans = await _transrepository.GetIdAsync(transportId);
+        var trans = await _repository.GetByIdAsync(transportId);
         if (trans is not null)
         {
             TransportComment comment = new TransportComment()
@@ -40,6 +47,7 @@ public class TransportCommentService : ITransportCommentService
                 UserId = _service.UserId,
                 TransportId = transportId,
                 ReplayId = dto.ReplyId,
+                ReplyId = dto.ReplyId,
                 Comment = dto.Comment,
                 IsEdited = dto.IsEdited,
                 CreatedAt = TimeHelper.GetDateTime(),
@@ -50,6 +58,13 @@ public class TransportCommentService : ITransportCommentService
             return result > 0;
         }
         else throw new TransportNotFoundExeption();
+
+
+            return result > 0;
+        }
+        else throw new TransportNotFoundExeption();
+        
+        
     }
     public async Task<bool> DeleteAsync(long transportId)
     {
@@ -73,6 +88,18 @@ public class TransportCommentService : ITransportCommentService
         if (comment is null) throw new CommentNotFoundExeption();
 
         return comment;
+        return dbResult > 0;
+    }
+    public async Task<IList<TransportCommentViewmodel>> GetAllAsync(Paginationparams @params)
+    {
+        var result = await _repository.GetAllAsync(@params);
+        return result;
+    }
+    public async Task<IList<TransportCommentViewmodel>> GetByIdAsync(long id)
+    {
+        var comment = await _repository.GetByIdAsync(id);
+        if (comment is null) throw new CommentNotFoundExeption();
+        return (IList<TransportCommentViewmodel>)comment;
     }
     public async Task<bool> UpdateAsync(long transportId, TransportCommentDto dto)
     {
@@ -84,6 +111,10 @@ public class TransportCommentService : ITransportCommentService
         transportcomment.UpdatedAt = TimeHelper.GetDateTime();
         var dbResult = await _repository.UpdateAsync(transportId, transportcomment);
 
+        transportcomment.ReplyId = dto.ReplyId;
+        transportcomment.Comment = dto.Comment;
+        transportcomment.UpdatedAt = TimeHelper.GetDateTime();
+        var dbResult = await _repository.UpdateAsync(transportId, transportcomment);
         return dbResult > 0;
     }
 }

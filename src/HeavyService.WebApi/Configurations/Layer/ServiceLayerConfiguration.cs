@@ -29,6 +29,7 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<IInstrumentService, InstrumentService>();
         builder.Services.AddScoped<IInstrumentCommentService, InstrumentCommentService>();
         builder.Services.AddScoped<ITransportService, TransportService>();
+        builder.Services.AddScoped<IInstrumentCommentService, InstrumentCommentService>();
         builder.Services.AddScoped<ITransportCommentService, TransportCommentService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();

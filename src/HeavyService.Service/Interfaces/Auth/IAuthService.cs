@@ -1,4 +1,5 @@
-﻿using HeavyService.Persistance.Dtos.Auth;
+﻿using HeavyService.Application.Utils;
+using HeavyService.Persistance.Dtos.Auth;
 
 namespace HeavyService.Service.Interfaces.Auth;
 

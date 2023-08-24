@@ -20,13 +20,13 @@ namespace HeavyService.WebApi.Controllers.Auth
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto registerDto)
+        public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto dto)
         {
             var validator = new RegisterValidator();
-            var result = validator.Validate(registerDto);
+            var result = validator.Validate(dto);
             if (result.IsValid)
             {
-                var serviseResult = await _authservise.RegisterAsync(registerDto);
+                var serviseResult = await _authservise.RegisterAsync(dto);
 
                 return Ok(new { serviseResult.Result, serviseResult.CachedMinutes });
             }

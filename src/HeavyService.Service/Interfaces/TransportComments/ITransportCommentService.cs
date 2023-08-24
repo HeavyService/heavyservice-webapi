@@ -13,3 +13,6 @@ public interface ITransportCommentService
     public Task<TransportCommentViewmodel> GetByIdAsync(long id);
     public Task<bool> UpdateAsync(long transportId, TransportCommentDto dto);
 }
+    public Task<IList<TransportCommentViewmodel>> GetByIdAsync(long id);
+    public Task<bool> UpdateAsync(long transportId,TransportCommentDto dto);
+}

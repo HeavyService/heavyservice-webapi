@@ -108,4 +108,24 @@ public class RoleRepository : BaseRepository, IRoleRepository
             await _connection.CloseAsync();
         }
     }
+
+    public async Task<Role> GetIdAsync(long id)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT * FROM roles where id = @Id";
+            var result = await _connection.QuerySingleAsync<Role>(query, new { Id = id });
+
+            return result;
+        }
+        catch
+        {
+            return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
 }

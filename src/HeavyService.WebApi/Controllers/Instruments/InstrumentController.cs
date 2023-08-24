@@ -47,7 +47,7 @@ namespace HeavyService.WebApi.Controllers.Instruments
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateAsyncs([FromForm] InstrumentCreateDto dto)
+        public async Task<IActionResult> CreateAsync([FromForm] InstrumentCreateDto dto)
         {
             var Valid = new InstrumentCreateValidator();
             var result = Valid.Validate(dto);
