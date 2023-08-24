@@ -1,6 +1,5 @@
 ﻿using HeavyService.Application.Exeptions.Auth;
 using HeavyService.Application.Exeptions.Users;
-using HeavyService.Application.Utils;
 using HeavyService.DataAccess.Interfaces.Users;
 using HeavyService.DataAccess.Repositories.UserRoles;
 using HeavyService.Domain.Entities.UserRoles;
@@ -29,7 +28,7 @@ public class AuthService : IAuthService
     private const string VERIFY_REGISTER_CACHE_KEY = "verify_register_";
     private const int VERIFICATION_MAXIMUM_ATTEMPTS = 3;
     public AuthService(IMemoryCache memoryCache, IUserRepository userrepos,
-        IEmailSMSSender emailSender, ITokenService tokenService,IIdentityService service)
+        IEmailSMSSender emailSender, ITokenService tokenService, IIdentityService service)
     {
         this._memoryCache = memoryCache;
         this._repository = userrepos;
@@ -133,7 +132,7 @@ public class AuthService : IAuthService
         user.LastName = registerDto.LastName;
         user.Email = registerDto.Email;
         user.EmailConfirmed = true;
-        user.Role = "Admin";
+        user.Role = "User";
         var hasherResult = PasswordHasher.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;

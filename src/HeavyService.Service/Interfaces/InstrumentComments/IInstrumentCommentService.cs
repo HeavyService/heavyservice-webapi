@@ -11,5 +11,4 @@ public interface IInstrumentCommentService
     public Task<long> CountAsync();
     public Task<IList<InstrumentCommentViewModel>> GetAllAsync(Paginationparams @params);
     public Task<InstrumentCommentViewModel> GetByIdAsync(long id);
-    public Task<bool> UpdateAsync(long instrumentId, InstrumentCommentCreateDto dto);
 }

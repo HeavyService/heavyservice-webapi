@@ -19,15 +19,12 @@ public class InstrumentService : IInstrumentService
     private readonly IIdentityService _service;
 
     public InstrumentService(IInstrumentRepository instrumentrepository,
-        IFileService fIleService, IPaginator paginator,
-        IIdentityService identity)
-    public InstrumentService(IInstrumentRepository instrumentrepository,
-        IFileService fIleService, IPaginator paginator, IIdentityService identityservice)
+        IFileService fIleService, IPaginator paginator, 
+        IIdentityService identityservice)
     {
         this._repository = instrumentrepository;
         this._fileServise = fIleService;
         this._paginator = paginator;
-        this._service = identity;
         this._service = identityservice;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -45,7 +42,6 @@ public class InstrumentService : IInstrumentService
             District = dto.District,
             Address = dto.Address,
             Status = dto.Status,
-            Status = dto.Status, 
             UserId = _service.UserId,
             PhoneNumber = dto.PhoneNumber,
             CreatedAt = TimeHelper.GetDateTime(),

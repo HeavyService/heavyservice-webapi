@@ -196,7 +196,6 @@ public class UserRepository : BaseRepository, IUserRepository
     }
 
     public async Task<IList<UserViewModel>> SearchAsync(string search, Paginationparams @params)
-    public Task<(int ItemsCount, IList<UserViewModel>)> SearchAsync(string search, Paginationparams @params)
     {
         try
         {
