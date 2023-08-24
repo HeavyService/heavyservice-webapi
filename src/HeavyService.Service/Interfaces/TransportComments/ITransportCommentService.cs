@@ -11,8 +11,4 @@ public interface ITransportCommentService
     public Task<long> CountAsync();
     public Task<IList<TransportCommentViewmodel>> GetAllAsync(Paginationparams @params);
     public Task<TransportCommentViewmodel> GetByIdAsync(long id);
-    public Task<bool> UpdateAsync(long transportId, TransportCommentDto dto);
-}
-    public Task<IList<TransportCommentViewmodel>> GetByIdAsync(long id);
-    public Task<bool> UpdateAsync(long transportId,TransportCommentDto dto);
 }
