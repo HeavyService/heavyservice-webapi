@@ -15,11 +15,14 @@ public class UserService : IUserservice
 {
     private readonly IUserRepository _repository;
     private readonly IPaginator _paginator;
+    private readonly IIdentityService _service;
 
-    public UserService(IUserRepository userrepository, IPaginator paginator)
+    public UserService(IUserRepository userrepository, IPaginator paginator,
+        IIdentityService service)
     {
         this._repository = userrepository;
         this._paginator = paginator;
+        this._service = service;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
     public async Task<bool> CreateAsync(UserCreateDto dto)
@@ -37,11 +40,16 @@ public class UserService : IUserservice
     public async Task<bool> DeleteAsync(long userId)
     {
         var user = await _repository.GetByIdAsync(userId);
-
         if (user is null) throw new UserNotFoundExeption();
-        var dbResult = await _repository.DeleteAsync(userId);
 
+        //if(_service.IdentityRole == "Admin" || _service.UserId == userId)
+        //{
+        var dbResult = await _repository.DeleteAsync(userId);
+            
         return dbResult > 0;
+        //}
+
+        //return false;
     }
     public async Task<IList<UserViewModel>> GetAllAsync(Paginationparams @params)
     {

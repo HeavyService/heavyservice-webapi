@@ -28,18 +28,17 @@ namespace HeavyService.WebApi.Controllers.Users
         public async Task<IActionResult> CountAsync()
             => Ok(await _service.CountAsync());
 
-        [HttpGet("userId")]
+        [HttpGet("{userId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetByIdAsync(long userId)
             => Ok(await _service.GetByIdAsync(userId));
 
-        [HttpDelete("userId")]
-        //[AllowAnonymous]
-        //[Authorize(Roles = "Admin")]
+        [HttpDelete("{userId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(long userId)
             => Ok(await _service.DeleteAsync(userId));
 
-        [HttpPut("userId")]
+        [HttpPut("{userId}")]
         [AllowAnonymous]
         public async Task<IActionResult> UpdateAsync(long userId, [FromForm] UserUpdateDto dto)
         {

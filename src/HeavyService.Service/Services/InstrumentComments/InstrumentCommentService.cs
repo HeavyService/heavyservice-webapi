@@ -30,16 +30,16 @@ public class InstrumentCommentService : IInstrumentCommentService
         this._paginator = paginator;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
-    public async Task<bool> CreateAsync(long instrumentId, InstrumentCommentCreateDto dto)
+    public async Task<bool> CreateAsync(InstrumentCommentCreateDto dto)
     {
-        var instrument = await _instrument.GetIdAsync(instrumentId);
+        var instrument = await _instrument.GetIdAsync(dto.InstrumentId);
         if (instrument is not null)
         {
             InstrumentComment comment = new InstrumentComment()
             {
                 UserId = _service.UserId,
                 ReplyId = dto.ReplyId,
-                InstrumentId = instrumentId,
+                InstrumentId = dto.InstrumentId,
                 Comment = dto.Comment,
                 IsEdited = dto.IsEdited,
                 CreatedAt = TimeHelper.GetDateTime(),

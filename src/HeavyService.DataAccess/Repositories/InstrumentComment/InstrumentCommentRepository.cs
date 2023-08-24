@@ -76,7 +76,7 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         {
             await _connection.OpenAsync();
 
-            string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name," +
+            string query = "SELECT instrument_comments.id, users.first_name, users.last_name, instruments.name," +
                 "instrument_comments.comment, instrument_comments.created_at, instrument_comments.updated_at FROM " +
                     "instrument_comments join instruments on instrument_comments.instrument_id = instruments.id join " +
                         "users on instrument_comments.user_id = users.id ORDER BY instrument_comments.id desc " +
@@ -102,7 +102,7 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         {
             await _connection.OpenAsync();
 
-            string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name," +
+            string query = "SELECT instrument_comments.id, users.first_name, users.last_name, instruments.name," +
                 "instrument_comments.comment, instrument_comments.created_at, instrument_comments.updated_at FROM " +
                     "instrument_comments join users on instrument_comments.user_id = users.id join instruments on " +
                         "instrument_comments.instrument_id = instruments.id where instrument_comments.id = @Id;";

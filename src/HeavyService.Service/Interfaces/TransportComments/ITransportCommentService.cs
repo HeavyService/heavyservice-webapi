@@ -6,7 +6,7 @@ namespace HeavyService.Service.Interfaces.TransportComments;
 
 public interface ITransportCommentService
 {
-    public Task<bool> CreateAsync(long transportId, TransportCommentDto dto);
+    public Task<bool> CreateAsync(TransportCommentDto dto);
     public Task<bool> DeleteAsync(long transportId);
     public Task<long> CountAsync();
     public Task<IList<TransportCommentViewmodel>> GetAllAsync(Paginationparams @params);
