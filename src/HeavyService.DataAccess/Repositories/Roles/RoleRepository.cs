@@ -108,5 +108,4 @@ public class RoleRepository : BaseRepository, IRoleRepository
             await _connection.CloseAsync();
         }
     }
-
 }

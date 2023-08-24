@@ -1,6 +1,4 @@
-﻿using HeavyService.Domain.Entities;
-
-namespace HeavyService.DataAccess.ViewModels;
+﻿namespace HeavyService.DataAccess.ViewModels;
 
 public class UserRoleViewModel
 {

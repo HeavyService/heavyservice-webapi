@@ -78,9 +78,13 @@ public class TransportRepository : BaseRepository, ITransportRepository
         {
             await _connection.OpenAsync();
             
-            string query = "SELECT * FROM transports JOIN users ON transports.user_id = users.id ORDER BY " +
-                $"transports.id DESC offset {@params.SkipCount()} limit {@params.PageSize}";
-            
+            string query = "SELECT transports.id, users.first_name, users.last_name, transports.name, " +
+                "transports.image_path, transports.price_per_hours, transports.district, transports.region, " +
+                    "transports.address, transports.status, transports.phone_number, transports.description, " +
+                        "transports.created_at, transports.updated_at FROM transports JOIN users ON " +
+                            $"transports.user_id = users.id ORDER BY transports.id DESC offset {@params.SkipCount()} " +
+                                $"limit {@params.PageSize}";
+
             var result = (await _connection.QueryAsync<TransportViewModel>(query)).ToList();
             
             return result;
@@ -101,9 +105,12 @@ public class TransportRepository : BaseRepository, ITransportRepository
         {
             await _connection.OpenAsync();
             
-            string query = "SELECT * FROM transports JOIN users ON transports.user_id = users.id " +
-                "where transports.id = @Id;";
-            
+            string query = "SELECT transports.id, users.first_name, users.last_name, transports.name, " +
+                "transports.image_path, transports.price_per_hours, transports.district, transports.region, " +
+                    "transports.address, transports.status, transports.phone_number, transports.description, " +
+                        "transports.created_at, transports.updated_at FROM transports JOIN users ON " +
+                            "transports.user_id = users.id WHERE transports.id = @Id;";
+
             var result = await _connection.QuerySingleAsync<TransportViewModel>(query, new { Id = id });
             
             return result;

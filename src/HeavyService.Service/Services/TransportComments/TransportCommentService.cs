@@ -8,6 +8,7 @@ using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.TransportComments;
 using HeavyService.Persistance.Dtos.TransportComments;
 using HeavyService.Persistance.Helpers;
+using HeavyService.Service.Interfaces.Commons;
 using HeavyService.Service.Interfaces.TransportComments;
 using HeavyService.Service.Interfaces.Users;
 
@@ -17,13 +18,16 @@ public class TransportCommentService : ITransportCommentService
     private readonly ITransportCommentRepository _repository;
     private readonly ITransportRepository _transrepository;
     private readonly IIdentityService _service;
+    private readonly IPaginator _paginator;
+
     public TransportCommentService(ITransportCommentRepository repository,
-        ITransportRepository transrepository,
+        ITransportRepository transrepository, IPaginator paginator,
         IIdentityService service)
     {
         this._repository = repository;
         this._transrepository = transrepository;
         this._service = service;
+        this._paginator = paginator;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
     public async Task<bool> CreateAsync(long transportId, TransportCommentDto dto)
@@ -46,8 +50,6 @@ public class TransportCommentService : ITransportCommentService
             return result > 0;
         }
         else throw new TransportNotFoundExeption();
-
-
     }
     public async Task<bool> DeleteAsync(long transportId)
     {
@@ -60,6 +62,8 @@ public class TransportCommentService : ITransportCommentService
     public async Task<IList<TransportCommentViewmodel>> GetAllAsync(Paginationparams @params)
     {
         var result = await _repository.GetAllAsync(@params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
 
         return result;
     }

@@ -138,7 +138,9 @@ public class UserRoleRepository : BaseRepository, IUserRoleRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "SELECT * FROM user_role_viewmodel WHERE id = @Id";
+            
+            string query = "SELECT roles.name, users.id FROM users JOIN user_roles ON user_roles.user_id = users.id " +
+                "JOIN roles ON roles.id = user_roles.role_id WHERE users.id = @Id";
             var result = await _connection.QuerySingleAsync<UserRoleViewModel>(query, new { Id = id });
 
             return result;

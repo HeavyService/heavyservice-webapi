@@ -58,10 +58,10 @@ public class TransportService : ITransportService
         var transport = await _repository.GetByIdAsync(transportId);
         if (transport is null) throw new TransportNotFoundExeption();
 
+        var dbResult = await _repository.DeleteAsync(transportId);
+        
         var result = await _fileServise.DeleteImageAsync(transport.ImagePath);
         if (result == false) throw new FilesNotFoundExeption();
-
-        var dbResult = await _repository.DeleteAsync(transportId);
        
         return dbResult > 0;
     }

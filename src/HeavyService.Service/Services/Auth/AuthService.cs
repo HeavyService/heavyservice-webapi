@@ -2,7 +2,6 @@
 using HeavyService.Application.Exeptions.Users;
 using HeavyService.DataAccess.Interfaces.Users;
 using HeavyService.DataAccess.Repositories.UserRoles;
-using HeavyService.Domain.Entities.Roles;
 using HeavyService.Domain.Entities.UserRoles;
 using HeavyService.Domain.Entities.Users;
 using HeavyService.Persistance.Dtos.Auth;
@@ -41,6 +40,7 @@ public class AuthService : IAuthService
         var hasherResult = PasswordHasher.Verify(loginDto.Password, user.PasswordHash, user.Salt);
         if (hasherResult == false) throw new PasswordIncorrectException();
         string token = await _tokenService.GenerateToken(user);
+
         return (Result: true, Token: token);
     }
     public async Task<(bool Result, int CachedMinutes)> RegisterAsync(RegisterDto dto)
@@ -56,6 +56,7 @@ public class AuthService : IAuthService
         {
             _memoryCache.Set(REGISTER_CACHE_KEY + dto.Email, dto, TimeSpan.FromMinutes(CACHED_MINUTES_FOR_REGISTER));
         }
+
         return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
     }
     public async Task<(bool Result, int CachedVerificationMinutes)> SendCodeForRegisterAsync(string email)
@@ -78,6 +79,7 @@ public class AuthService : IAuthService
             emailMessage.Content = "Your verification code : " + verificationDto.Code;
             emailMessage.Resipient = email;
             var emailResult = await _emailSender.SendAsync(emailMessage);
+
             if (emailResult is true) return (Result: true, CachedVerificationMinutes: CACHED_MINUTES_FOR_VERIFICATION);
             else return (Result: false, CachedVerificationMinutes: 0);
         }
@@ -98,6 +100,7 @@ public class AuthService : IAuthService
                     {
                         var user = await _repository.GetByEmailAsync(email);
                         string token = await _tokenService.GenerateToken(user);
+
                         return (Result: true, Token: token);
                     }
 
@@ -120,7 +123,6 @@ public class AuthService : IAuthService
     private async Task<bool> RegisterToDatabaseAsync(RegisterDto registerDto)
     {
         var user = new User();
-        var role = new Role();
         user.FirstName = registerDto.FirstName;
         user.LastName = registerDto.LastName;
         user.Email = registerDto.Email;

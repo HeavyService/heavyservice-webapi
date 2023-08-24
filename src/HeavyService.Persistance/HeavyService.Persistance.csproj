@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HeavyService.DataAccess\HeavyService.DataAccess.csproj" />
+    <Compile Remove="Attributes\**" />
+    <Compile Remove="Filters\**" />
+    <EmbeddedResource Remove="Attributes\**" />
+    <EmbeddedResource Remove="Filters\**" />
+    <None Remove="Attributes\**" />
+    <None Remove="Filters\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes\" />
-    <Folder Include="Filters\" />
+    <ProjectReference Include="..\HeavyService.DataAccess\HeavyService.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>
