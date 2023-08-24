@@ -30,15 +30,15 @@ public class TransportCommentService : ITransportCommentService
         this._transrepository = transrepository;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
-    public async Task<bool> CreateAsync(long transportId, TransportCommentDto dto)
+    public async Task<bool> CreateAsync(TransportCommentDto dto)
     {
-        var trans = await _transrepository.GetIdAsync(transportId);
+        var trans = await _transrepository.GetIdAsync(dto.TransportId);
         if (trans is not null)
         {
             TransportComment comment = new TransportComment()
             {
                 UserId = _service.UserId,
-                TransportId = transportId,
+                TransportId = dto.TransportId,
                 ReplyId = dto.ReplyId,
                 Comment = dto.Comment,
                 IsEdited = dto.IsEdited,

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HeavyService.WebApi.Controllers.InstrumentComments
 {
-    [Route("api/instruments/comment")]
+    [Route("api/instruments/comments")]
     [ApiController]
     public class InstrumentCommentController : ControllerBase
     {
@@ -35,16 +35,16 @@ namespace HeavyService.WebApi.Controllers.InstrumentComments
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateAsync(long instrumentId, [FromForm] InstrumentCommentCreateDto dto)
+        public async Task<IActionResult> CreateAsync([FromForm] InstrumentCommentCreateDto dto)
         {
             var Valid = new InstrumentCommentValidator();
             var result = Valid.Validate(dto);
 
-            if (result.IsValid) return Ok(await _service.CreateAsync(instrumentId, dto));
+            if (result.IsValid) return Ok(await _service.CreateAsync(dto));
             else { return BadRequest(result.Errors); }
         }
 
-        [HttpDelete]
+        [HttpDelete("{commentId}")]
         [AllowAnonymous]
         public async Task<IActionResult> DeleteAsync(long commentId)
             => Ok(await _service.DeleteAsync(commentId));

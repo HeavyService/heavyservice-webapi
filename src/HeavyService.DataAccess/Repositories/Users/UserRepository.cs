@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HeavyService.Application.Utils;
 using HeavyService.DataAccess.Interfaces.Users;
+using HeavyService.DataAccess.Repositories.Transports;
 using HeavyService.DataAccess.Repositories.UserRoles;
 using HeavyService.DataAccess.ViewModels;
 using HeavyService.Domain.Entities.Users;
@@ -58,6 +59,8 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             var role = new UserRoleRepository();
             await role.DeleteAsync(id);
+
+            var transport = new TransportRepository();
             
             await _connection.OpenAsync();
             

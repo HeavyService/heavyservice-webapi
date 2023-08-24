@@ -79,7 +79,7 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         {
             await _connection.OpenAsync();
             
-            string query = "SELECT transports.id, users.first_name, users.last_name, transports.name," +
+            string query = "SELECT transport_comments.id, users.first_name, users.last_name, transports.name," +
                 "transport_comments.comment, transport_comments.created_at, transport_comments.updated_at FROM " +
                     "transport_comments join users on transport_comments.user_id = users.id join transports on " +
                         "transport_comments.transport_id = transports.id ORDER BY transport_comments.id DESC " +
@@ -105,7 +105,7 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         {
             await _connection.OpenAsync();
             
-            string query = "SELECT transports.id, users.first_name, users.last_name, transports.name," +
+            string query = "SELECT transport_comments.id, users.first_name, users.last_name, transports.name," +
                 "transport_comments.comment, transport_comments.created_ad, transport_comments.updated_at FROM " +
                     "transport_comments join users on transport_comments.user_id = users.id join transports on " +
                         "transport_comments.transport_id = transports.id where transport_comments.id = @Id;"; 
