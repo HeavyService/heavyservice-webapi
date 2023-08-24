@@ -76,9 +76,11 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         {
             await _connection.OpenAsync();
 
-            string query = $"SELECT * FROM instrument_comments join users on instrument_comments.user_id = users.id " +
-                $"join instruments on instrument_comments.instrument_id = instruments.id order by instrument_comments.id desc " +
-                    $"offset {@params.SkipCount()} limit {@params.PageSize}";
+            string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name," +
+                "instrument_comments.comment, instrument_comments.created_at, instrument_comments.updated_at FROM " +
+                    "instrument_comments join instruments on instrument_comments.instrument_id = instruments.id join " +
+                        "users on instrument_comments.user_id = users.id ORDER BY instrument_comments.id desc " +
+                            $"offset {@params.SkipCount()} limit {@params.PageSize}";
 
             var result = (await _connection.QueryAsync<InstrumentCommentViewModel>(query)).ToList();
 
@@ -100,10 +102,12 @@ public class InstrumentCommentRepository : BaseRepository, IInstrumentComment
         {
             await _connection.OpenAsync();
 
-            string query = $"SELECT * FROM instrument_comments join users on instrument_comments.user_id = users.id " +
-                $"join instruments on instrument_comments.instrument_id = instruments.id where instrument_comments.id = @Id;"; 
-            
-                var result = await _connection.QuerySingleAsync<InstrumentCommentViewModel>(query, new { Id = id });
+            string query = "SELECT instruments.id, users.first_name, users.last_name, instruments.name," +
+                "instrument_comments.comment, instrument_comments.created_at, instrument_comments.updated_at FROM " +
+                    "instrument_comments join users on instrument_comments.user_id = users.id join instruments on " +
+                        "instrument_comments.instrument_id = instruments.id where instrument_comments.id = @Id;";
+
+            var result = await _connection.QuerySingleAsync<InstrumentCommentViewModel>(query, new { Id = id });
 
             return result;
         }

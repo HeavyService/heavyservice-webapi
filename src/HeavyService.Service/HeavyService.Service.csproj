@@ -6,16 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="hubs\**" />
+    <EmbeddedResource Remove="hubs\**" />
+    <None Remove="hubs\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<FrameWorkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HeavyService.Persistance\HeavyService.Persistance.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="hubs\" />
   </ItemGroup>
 
   <ItemGroup>

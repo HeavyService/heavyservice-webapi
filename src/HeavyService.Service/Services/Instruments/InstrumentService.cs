@@ -60,17 +60,18 @@ public class InstrumentService : IInstrumentService
         var instrument = await _repository.GetByIdAsync(id);
         if (instrument is null) throw new InstrumentNotFoundExeption();
 
+        var dbResult = await _repository.DeleteAsync(id);
+        
         var result = await _fileServise.DeleteImageAsync(instrument.ImagePath);
         if (result == false) throw new InstrumentNotFoundExeption();
 
-        var dbResult = await _repository.DeleteAsync(id);
-        
         return dbResult > 0;
     }
     public async Task<InstrumentViewModel> GetByIdAsync(long instrumentId)
     {
         var instrument = await _repository.GetByIdAsync(instrumentId);
         if (instrument is null) throw new InstrumentNotFoundExeption();
+        
         return instrument;
     }
     public async Task<bool> UpdateAsync(long instrumentId, InstrumentUpdateDto dto)

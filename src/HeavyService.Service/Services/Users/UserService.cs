@@ -56,6 +56,7 @@ public class UserService : IUserservice
         var user = await _repository.GetByIdAsync(id);
 
         if (user is null) throw new UserNotFoundExeption();
+        
         else return user;
     }
 

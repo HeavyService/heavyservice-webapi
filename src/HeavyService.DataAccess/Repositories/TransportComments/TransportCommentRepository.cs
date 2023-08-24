@@ -81,10 +81,12 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         {
             await _connection.OpenAsync();
             
-            string query = $"SELECT * FROM transport_comments join users on transport_comments.user_id = users.id " +
-                $"join transports on transport_comments.transport_id = transports.id order by transport_comments.id desc " +
-                    $"offset {@params.SkipCount()} limit {@params.PageSize}";
-            
+            string query = "SELECT transports.id, users.first_name, users.last_name, transports.name," +
+                "transport_comments.comment, transport_comments.created_at, transport_comments.updated_at FROM " +
+                    "transport_comments join users on transport_comments.user_id = users.id join transports on " +
+                        "transport_comments.transport_id = transports.id ORDER BY transport_comments.id DESC " +
+                            $"offset {@params.SkipCount()} limit {@params.PageSize}";
+
             var result = (await _connection.QueryAsync<TransportCommentViewmodel>(query)).ToList();
             
             return result;
@@ -105,8 +107,10 @@ public class TransportCommentRepository : BaseRepository, ITransportCommentRepos
         {
             await _connection.OpenAsync();
             
-            string query = "SELECT * FROM transport_comments join users on transport_comments.user_id = users.id " +
-                "join transports on transport_comments.transport_id = transports.id where transport_comments.id = @Id;"; 
+            string query = "SELECT transports.id, users.first_name, users.last_name, transports.name," +
+                "transport_comments.comment, transport_comments.created_ad, transport_comments.updated_at FROM " +
+                    "transport_comments join users on transport_comments.user_id = users.id join transports on " +
+                        "transport_comments.transport_id = transports.id where transport_comments.id = @Id;"; 
             
             var result = await _connection.QuerySingleAsync<TransportCommentViewmodel>(query, new { Id = id });
            

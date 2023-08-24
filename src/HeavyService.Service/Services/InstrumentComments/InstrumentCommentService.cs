@@ -18,6 +18,7 @@ public class InstrumentCommentService : IInstrumentCommentService
     private readonly IInstrumentComment _repository;
     private readonly IIdentityService _service;
     private readonly IInstrumentRepository _instrument;
+    private readonly IPaginator _paginator;
 
     public InstrumentCommentService(IInstrumentComment repository,
         IPaginator paginator,
@@ -30,6 +31,7 @@ public class InstrumentCommentService : IInstrumentCommentService
         this._repository = repository;
         this._service = identityservice;
         this._instrument = repostory;
+        this._paginator = paginator;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
     public async Task<bool> CreateAsync(long instrumentId, InstrumentCommentCreateDto dto)
@@ -75,6 +77,8 @@ public class InstrumentCommentService : IInstrumentCommentService
     public async Task<IList<InstrumentCommentViewModel>> GetAllAsync(Paginationparams @params)
     {
         var result = await _repository.GetAllAsync(@params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
 
         return result;
     }

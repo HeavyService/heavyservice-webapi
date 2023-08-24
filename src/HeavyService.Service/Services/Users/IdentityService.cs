@@ -17,6 +17,7 @@ public class IdentityService : IIdentityService
             if (_accessor.HttpContext is null) return 0;
             var claim = _accessor.HttpContext.User.Claims.FirstOrDefault(op => op.Type == "Id");
             if (claim is null) return 0;
+            
             else return long.Parse(claim.Value);
         }
     }
@@ -27,6 +28,7 @@ public class IdentityService : IIdentityService
             if (_accessor.HttpContext is null) return "";
             var claim = _accessor.HttpContext.User.Claims.FirstOrDefault(op => op.Type == "FirstName");
             if (claim is null) return "";
+            
             else return claim.Value;
         }
     }
@@ -37,6 +39,7 @@ public class IdentityService : IIdentityService
             if (_accessor.HttpContext is null) return "";
             var claim = _accessor.HttpContext.User.Claims.FirstOrDefault(op => op.Type == "Lastname");
             if (claim is null) return "";
+           
             else return claim.Value;
         }
     }
@@ -48,6 +51,7 @@ public class IdentityService : IIdentityService
             string type = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
             var claim = _accessor.HttpContext.User.Claims.FirstOrDefault(op => op.Type == type);
             if (claim is null) return "";
+            
             else return claim.Value;
         }
     }
@@ -59,6 +63,7 @@ public class IdentityService : IIdentityService
             string type = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
             var claim = _accessor.HttpContext.User.Claims.FirstOrDefault(op => op.Type == type);
             if (claim is null) return null;
+            
             else return claim.Value;
         }
     }
