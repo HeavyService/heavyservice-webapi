@@ -1,4 +1,5 @@
-﻿using HeavyService.Application.Exeptions.Instruments;
+﻿using AutoMapper;
+using HeavyService.Application.Exeptions.Instruments;
 using HeavyService.Application.Utils;
 using HeavyService.DataAccess.Interfaces.Instruments;
 using HeavyService.DataAccess.ViewModels;
@@ -17,36 +18,26 @@ public class InstrumentService : IInstrumentService
     private readonly IFileService _fileServise;
     private readonly IPaginator _paginator;
     private readonly IIdentityService _service;
+    private readonly IMapper _mapper;
 
     public InstrumentService(IInstrumentRepository instrumentrepository,
         IFileService fIleService, IPaginator paginator, 
-        IIdentityService identityservice)
+        IIdentityService identityservice,
+        IMapper mapper)
     {
         this._repository = instrumentrepository;
         this._fileServise = fIleService;
         this._paginator = paginator;
         this._service = identityservice;
+        this._mapper = mapper;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
 
     public async Task<bool> CreateAsync(InstrumentCreateDto dto)
     {
+        Instrument instrument = _mapper.Map<Instrument>(dto);
         string imagepath = await _fileServise.UploadImageAsync(dto.ImagePath);
-        Instrument instrument = new Instrument()
-        {
-            ImagePath = imagepath,
-            Name = dto.Name,
-            Description = dto.Description,
-            PricePerDay = dto.PricePerDay,
-            Region = dto.Region,
-            District = dto.District,
-            Address = dto.Address,
-            Status = dto.Status,
-            UserId = _service.UserId,
-            PhoneNumber = dto.PhoneNumber,
-            CreatedAt = TimeHelper.GetDateTime(),
-            UpdatedAt = TimeHelper.GetDateTime(),
-        };
+        instrument.CreatedAt = instrument.UpdatedAt = TimeHelper.GetDateTime();
         var result = await _repository.CreateAsync(instrument);
         
         return result > 0;
