@@ -9,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.ConfigureJwtAuth();
 builder.ConfigureSwaggerAuth();
